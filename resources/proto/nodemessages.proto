@@ -1,0 +1,29 @@
+message Event {
+  enum EventType {
+    FOO = 1;
+    BAR = 2;
+    NODE_CONNECTION_START = 3;
+  }
+
+  required EventType type = 1;
+
+  optional Foo foo = 2;
+  optional Bar bar = 3;
+  optional NodeConnectionStart node_connection_start = 4;
+}
+
+message Foo {
+  required int64 id = 1;
+  optional int64 sender = 2;
+  optional int64 receiver = 3;
+}
+
+message Bar {
+  required int64 id = 1;
+  optional int64 sender = 2;
+  optional int64 receiver = 3;
+}
+
+message NodeConnectionStart {
+  required string node_name = 1;
+}

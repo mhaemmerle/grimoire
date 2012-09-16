@@ -1,0 +1,14 @@
+/pom.xml
+*jar
+/lib
+/classes
+/native
+/.lein-failures
+/checkouts
+/.lein-deps-sum
+/.lein-cljsbuild-compiler-0
+/.lein-plugins
+/notes.md
+/script
+/target
+/test.sh
