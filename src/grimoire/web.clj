@@ -126,15 +126,14 @@
 
 (defn action-handler
   [response-channel request]
-  ;; disable delayed response for now
-  ;; (let [event-channel (map* generate-string (channel))
-  (let [{{:keys [user-id action verb]} :route-params} request
+  (let [event-channel (map* generate-string (channel))
+        {{:keys [user-id action verb]} :route-params} request
         body (decode-json (:body request))]
-    (session/update (read-string user-id) nil action verb body)
+    (session/update (read-string user-id) event-channel action verb body)
     (enqueue response-channel
              {:status 200
               :headers {"Content-Type" "application/json"}
-              :body ""})))
+              :body event-channel})))
 
 (defn ^:private create-event-data-response
   [response-channel event-channel]
@@ -156,6 +155,16 @@
     (node/register-stats-channel event-channel)
     (create-event-data-response response-channel event-channel)))
 
+;; TODO move to bench/test namespace
+(defn bench-handler
+  [response-channel request]
+  (let [event-channel (map* generate-string (channel))]
+    (session/update (read-string "123") event-channel "map" "add" {:id 1 :x 50 :y 50})
+    (enqueue response-channel
+             {:status 200
+              :headers {"Content-Type" "application/json"}
+              :body event-channel})))
+
 ;; FIXME wrap synchronous handlers instead of asynchronous ones
 (defroutes handler
   (GET "/" [] (index 123))
@@ -166,6 +175,7 @@
            (POST "/:action/:verb" [] (wrap-aleph-handler action-handler)))
   (GET ["/stats-events"] [] (wrap-aleph-handler stats-events-handler))
   (GET ["/stats"] [] (stats-index))
+  (GET "/bench" [] (wrap-aleph-handler bench-handler))
   (route/resources "/")
   (route/not-found "Page not found"))
 

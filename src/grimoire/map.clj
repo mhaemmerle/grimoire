@@ -65,12 +65,14 @@
     (let [entity-config (example-entities id)
           coord-key (m-keyword x y)
           entity (get-in state [:map coord-key])]
-      (if (nil? entity)
+      ;; (if (nil? entity)
         (-> state
             (assoc-in [:map coord-key] {:id id})
             (update-in [:balance] - (:cost entity-config))
             build-response)
-        (throw (Exception. (format "map_position_not_empty, args=[%s, %s]" x y)))))))
+        ;; (throw (Exception. (format "map_position_not_empty,
+        ;; args=[%s,%s]" x y))))
+        )))
 
 (defupdate update :start-contract
   (fn [state {:keys [id x y]}]

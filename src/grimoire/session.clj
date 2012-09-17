@@ -50,8 +50,7 @@
                                                :body request-body})]
       (send session (partial (fn [_response-channel _session]
                                (update-fn _response-channel _session))
-                             ;; response-channel)))
-                             (:event-channel (@sessions user-id)))))
+                             response-channel)))
     (throw (Exception. (format "session_not_running, args=[%s]" user-id))))
     nil)
 
@@ -146,15 +145,12 @@
 (defn ^:private start
   [user-id session]
   (let [remote-channel (named-channel (keyword (str user-id)) (fn [_]))
-        event-channel (permanent-channel)
         session-timeout (get-timeout user-id (config/system :session-timeout)
                                      session-timeout-handler)
         save-timeout (get-timeout user-id (config/system :save-interval)
                                   save-timeout-handler)
-        data {:session session :event-channel event-channel
-              :remote-channel remote-channel :session-timeout session-timeout
-              :save-timeout save-timeout}]
-    (ground event-channel)
+        data {:session session :event-channel nil :remote-channel remote-channel
+              :session-timeout session-timeout :save-timeout save-timeout}]
     (set-error-handler! session agent-error-handler)
     ;; (add-watch session nil (create-watch-fn #(log/info "watch callback")))
     (swap! sessions assoc user-id data)
