@@ -3029,7 +3029,7 @@ net.brehaut.ClojureTools = (function (SH) {
   };
 })(SyntaxHighlighter);
 </script><title>grimoire -- Marginalia</title></head><body><table><tr><td class="docs"><div class="header"><h1 class="project-name">grimoire</h1><h2 class="project-version">0.1.0-SNAPSHOT</h2><br />
-</div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.4.0</td></tr><tr><td class="dep-name">org.slf4j/slf4j-api</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.slf4j/slf4j-log4j12</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.clojure/tools.logging</td><td class="dotted"><hr /></td><td class="dep-version">0.2.3</td></tr><tr><td class="dep-name">lamina</td><td class="dotted"><hr /></td><td class="dep-version">0.5.0-SNAPSHOT</td></tr><tr><td class="dep-name">aleph</td><td class="dotted"><hr /></td><td class="dep-version">0.3.0-beta3</td></tr><tr><td class="dep-name">zookeeper-clj</td><td class="dotted"><hr /></td><td class="dep-version">0.9.2</td></tr><tr><td class="dep-name">ring</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">hiccup</td><td class="dotted"><hr /></td><td class="dep-version">1.0.0</td></tr><tr><td class="dep-name">ring/ring-jetty-adapter</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">ring-json-params</td><td class="dotted"><hr /></td><td class="dep-version">0.1.3</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">slingshot</td><td class="dotted"><hr /></td><td class="dep-version">0.10.3</td></tr><tr><td class="dep-name">cheshire</td><td class="dotted"><hr /></td><td class="dep-version">4.0.1</td></tr><tr><td class="dep-name">clj-aws-s3</td><td class="dotted"><hr /></td><td class="dep-version">0.3.2</td></tr><tr><td class="dep-name">org.clojure/tools.cli</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr><tr><td class="dep-name">protobuf</td><td class="dotted"><hr /></td><td class="dep-version">0.6.1</td></tr><tr><td class="dep-name">org.clojure/tools.nrepl</td><td class="dotted"><hr /></td><td class="dep-version">0.2.0-beta9</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">lein-marginalia</td><td class="dotted"><hr /></td><td class="dep-version">0.7.1</td></tr><tr><td class="dep-name">criterium</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#grimoire.cluster">grimoire.cluster</a></li><li><a href="#grimoire.config">grimoire.config</a></li><li><a href="#grimoire.core">grimoire.core</a></li><li><a href="#grimoire.game">grimoire.game</a></li><li><a href="#grimoire.landing">grimoire.landing</a></li><li><a href="#grimoire.level">grimoire.level</a></li><li><a href="#grimoire.map">grimoire.map</a></li><li><a href="#grimoire.node">grimoire.node</a></li><li><a href="#grimoire.protocol">grimoire.protocol</a></li><li><a href="#grimoire.registry">grimoire.registry</a></li><li><a href="#grimoire.session">grimoire.session</a></li><li><a href="#grimoire.storage">grimoire.storage</a></li><li><a href="#grimoire.user">grimoire.user</a></li><li><a href="#grimoire.util">grimoire.util</a></li><li><a href="#grimoire.web">grimoire.web</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.cluster" name="grimoire.cluster"><h1 class="project-name">grimoire.cluster</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+</div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.4.0</td></tr><tr><td class="dep-name">org.slf4j/slf4j-api</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.slf4j/slf4j-log4j12</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.clojure/tools.logging</td><td class="dotted"><hr /></td><td class="dep-version">0.2.3</td></tr><tr><td class="dep-name">lamina</td><td class="dotted"><hr /></td><td class="dep-version">0.5.0-SNAPSHOT</td></tr><tr><td class="dep-name">aleph</td><td class="dotted"><hr /></td><td class="dep-version">0.3.0-SNAPSHOT</td></tr><tr><td class="dep-name">zookeeper-clj</td><td class="dotted"><hr /></td><td class="dep-version">0.9.2</td></tr><tr><td class="dep-name">ring</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">hiccup</td><td class="dotted"><hr /></td><td class="dep-version">1.0.0</td></tr><tr><td class="dep-name">ring/ring-jetty-adapter</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">ring-json-params</td><td class="dotted"><hr /></td><td class="dep-version">0.1.3</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">slingshot</td><td class="dotted"><hr /></td><td class="dep-version">0.10.3</td></tr><tr><td class="dep-name">cheshire</td><td class="dotted"><hr /></td><td class="dep-version">4.0.1</td></tr><tr><td class="dep-name">clj-aws-s3</td><td class="dotted"><hr /></td><td class="dep-version">0.3.2</td></tr><tr><td class="dep-name">org.clojure/tools.cli</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr><tr><td class="dep-name">protobuf</td><td class="dotted"><hr /></td><td class="dep-version">0.6.1</td></tr><tr><td class="dep-name">org.clojure/tools.nrepl</td><td class="dotted"><hr /></td><td class="dep-version">0.2.0-beta9</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">lein-marginalia</td><td class="dotted"><hr /></td><td class="dep-version">0.7.1</td></tr><tr><td class="dep-name">criterium</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#grimoire.cluster">grimoire.cluster</a></li><li><a href="#grimoire.config">grimoire.config</a></li><li><a href="#grimoire.core">grimoire.core</a></li><li><a href="#grimoire.game">grimoire.game</a></li><li><a href="#grimoire.landing">grimoire.landing</a></li><li><a href="#grimoire.level">grimoire.level</a></li><li><a href="#grimoire.map">grimoire.map</a></li><li><a href="#grimoire.node">grimoire.node</a></li><li><a href="#grimoire.protocol">grimoire.protocol</a></li><li><a href="#grimoire.registry">grimoire.registry</a></li><li><a href="#grimoire.session">grimoire.session</a></li><li><a href="#grimoire.storage">grimoire.storage</a></li><li><a href="#grimoire.user">grimoire.user</a></li><li><a href="#grimoire.util">grimoire.util</a></li><li><a href="#grimoire.web">grimoire.web</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.cluster" name="grimoire.cluster"><h1 class="project-name">grimoire.cluster</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.cluster
   (:refer-clojure :exclude [join])
   (:require  [grimoire
@@ -3127,8 +3127,8 @@ net.brehaut.ClojureTools = (function (SH) {
    {:port 2181 :host &quot;127.0.01&quot;}
    {:port 2181 :host &quot;127.0.01&quot;}])</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defonce aws
-  {:access-key 
-   :secret-key 
+  {:access-key &quot;033G2TPHEBTWC360RRG2&quot;
+   :secret-key &quot;mCfw/OxodR/YDyC6qINI1VSYuw0dn1+XoGMRMDg5&quot;
    :bucket &quot;grimoire-dev&quot;})</pre></td></tr><tr><td class="docs"><p>default options</p>
 </td><td class="codes"><pre class="brush: clojure">(defonce db
   {:host &quot;localhost&quot;
@@ -3320,12 +3320,13 @@ net.brehaut.ClojureTools = (function (SH) {
     (let [entity-config (example-entities id)
           coord-key (m-keyword x y)
           entity (get-in state [:map coord-key])]
-      (if (nil? entity)
+      ;; (if (nil? entity)
         (-&gt; state
             (assoc-in [:map coord-key] {:id id})
             (update-in [:balance] - (:cost entity-config))
             build-response)
-        (throw (Exception. (format &quot;map_position_not_empty, args=[%s, %s]&quot; x y)))))))</pre></td></tr><tr><td class="docs">
+        ;; (throw (Exception. (format &quot;map_position_not_empty,
+        ;; args=[%s,%s]&quot; x y)))))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defupdate update :start-contract
   (fn [state {:keys [id x y]}]
     (let [coord-key (m-keyword x y)
@@ -3637,8 +3638,7 @@ don't forget back-off</p>
                                                :body request-body})]
       (send session (partial (fn [_response-channel _session]
                                (update-fn _response-channel _session))
-                             ;; response-channel)))
-                             (:event-channel (@sessions user-id)))))
+                             response-channel)))
     (throw (Exception. (format &quot;session_not_running, args=[%s]&quot; user-id))))
     nil)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private cancel-timeout
@@ -3719,15 +3719,12 @@ don't forget back-off</p>
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private start
   [user-id session]
   (let [remote-channel (named-channel (keyword (str user-id)) (fn [_]))
-        event-channel (permanent-channel)
         session-timeout (get-timeout user-id (config/system :session-timeout)
                                      session-timeout-handler)
         save-timeout (get-timeout user-id (config/system :save-interval)
                                   save-timeout-handler)
-        data {:session session :event-channel event-channel
-              :remote-channel remote-channel :session-timeout session-timeout
-              :save-timeout save-timeout}]
-    (ground event-channel)
+        data {:session session :event-channel nil :remote-channel remote-channel
+              :session-timeout session-timeout :save-timeout save-timeout}]
     (set-error-handler! session agent-error-handler)
     ;; (add-watch session nil (create-watch-fn #(log/info &quot;watch callback&quot;)))
     (swap! sessions assoc user-id data)
@@ -3975,15 +3972,14 @@ don't forget back-off</p>
       {:node (registry/get-location (read-string user-id))})))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn action-handler
   [response-channel request]
-  ;; disable delayed response for now
-  ;; (let [event-channel (map* generate-string (channel))
-  (let [{{:keys [user-id action verb]} :route-params} request
+  (let [event-channel (map* generate-string (channel))
+        {{:keys [user-id action verb]} :route-params} request
         body (decode-json (:body request))]
-    (session/update (read-string user-id) nil action verb body)
+    (session/update (read-string user-id) event-channel action verb body)
     (enqueue response-channel
              {:status 200
               :headers {&quot;Content-Type&quot; &quot;application/json&quot;}
-              :body })))</pre></td></tr><tr><td class="docs">
+              :body event-channel})))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private create-event-data-response
   [response-channel event-channel]
   (enqueue response-channel
@@ -4000,7 +3996,15 @@ don't forget back-off</p>
   [response-channel request]
   (let [event-channel (channel)]
     (node/register-stats-channel event-channel)
-    (create-event-data-response response-channel event-channel)))</pre></td></tr><tr><td class="docs"><p>FIXME wrap synchronous handlers instead of asynchronous ones</p>
+    (create-event-data-response response-channel event-channel)))</pre></td></tr><tr><td class="docs"><p>TODO move to bench/test namespace</p>
+</td><td class="codes"><pre class="brush: clojure">(defn bench-handler
+  [response-channel request]
+  (let [event-channel (map* generate-string (channel))]
+    (session/update (read-string &quot;123&quot;) event-channel &quot;map&quot; &quot;add&quot; {:id 1 :x 50 :y 50})
+    (enqueue response-channel
+             {:status 200
+              :headers {&quot;Content-Type&quot; &quot;application/json&quot;}
+              :body event-channel})))</pre></td></tr><tr><td class="docs"><p>FIXME wrap synchronous handlers instead of asynchronous ones</p>
 </td><td class="codes"><pre class="brush: clojure">(defroutes handler
   (GET &quot;/&quot; [] (index 123))
   (context [&quot;/:user-id&quot;, :uuser-id #&quot;[0-9]+&quot;] []
@@ -4010,6 +4014,7 @@ don't forget back-off</p>
            (POST &quot;/:action/:verb&quot; [] (wrap-aleph-handler action-handler)))
   (GET [&quot;/stats-events&quot;] [] (wrap-aleph-handler stats-events-handler))
   (GET [&quot;/stats&quot;] [] (stats-index))
+  (GET &quot;/bench&quot; [] (wrap-aleph-handler bench-handler))
   (route/resources &quot;/&quot;)
   (route/not-found &quot;Page not found&quot;))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(def application
