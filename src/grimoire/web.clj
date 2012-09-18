@@ -158,29 +158,41 @@
 ;; TODO move to bench/test namespace
 (defn bench-handler
   [response-channel request]
-  (let [event-channel (map* generate-string (channel))]
-    (session/update (read-string "123") event-channel "map" "add" {:id 1 :x 50 :y 50})
+  (let [event-channel (map* generate-string (channel))
+        user-id (Integer/parseInt "123")]
+    (session/update user-id event-channel "map" "add"
+                    {:id 1 :x (rand-int 100) :y (rand-int 100)})
     (enqueue response-channel
              {:status 200
               :headers {"Content-Type" "application/json"}
               :body event-channel})))
 
-;; FIXME wrap synchronous handlers instead of asynchronous ones
-(defroutes handler
-  (GET "/" [] (index 123))
-  (context ["/:user-id", :uuser-id #"[0-9]+"] []
-           (GET "/setup" [] (wrap-aleph-handler setup-handler))
-           (GET "/whereis" [] (wrap-aleph-handler where-is-handler))
-           (GET "/events" [] (wrap-aleph-handler session-events-handler))
-           (POST "/:action/:verb" [] (wrap-aleph-handler action-handler)))
-  (GET ["/stats-events"] [] (wrap-aleph-handler stats-events-handler))
-  (GET ["/stats"] [] (stats-index))
-  (GET "/bench" [] (wrap-aleph-handler bench-handler))
-  (route/resources "/")
-  (route/not-found "Page not found"))
+;; TODO move to bench/test namespace
+(defn noop-handler
+  []
+  {:status 200
+   :headers {}
+   :body ""})
+
+(def handlers
+  (routes
+   (GET "/" [] (index 123))
+   (GET ["/:user-id/setup", :user-id #"[0-9]+"] [] (wrap-aleph-handler setup-handler))
+   (GET ["/:user-id/where-is", :user-id #"[0-9]+"] [] (wrap-aleph-handler
+                                                       where-is-handler))
+   (GET ["/:user-id/events", :user-id #"[0-9]+"] [] (wrap-aleph-handler
+                                                     session-events-handler))
+   (POST ["/:user-id/:action/:verb", :user-id #"[0-9]+"] [] (wrap-aleph-handler
+                                                             action-handler))
+   (GET ["/stats-events"] [] (wrap-aleph-handler stats-events-handler))
+   (GET ["/stats"] [] (stats-index))
+   (GET "/bench" [] (wrap-aleph-handler bench-handler))
+   (GET "/noop" [] (noop-handler))
+   (route/resources "/")
+   (route/not-found "Page not found")))
 
 (def application
-  (-> handler
+  (-> handlers
       wrap-bounce-favicon
       wrap-json-params
       wrap-error-handling))

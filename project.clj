@@ -3,8 +3,7 @@
                  [org.slf4j/slf4j-api "1.6.6"]
                  [org.slf4j/slf4j-log4j12 "1.6.6"]
                  [org.clojure/tools.logging "0.2.3"]
-                 [lamina "0.5.0-SNAPSHOT"]
-                 [aleph "0.3.0-SNAPSHOT"]
+                 [aleph "0.3.0-beta4"]
                  [zookeeper-clj "0.9.2"]
                  [ring "1.1.1"]
                  [compojure "1.1.1"]
@@ -28,6 +27,6 @@
                         :compiler {:output-to "resources/public/js/main.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
-  :jvm-opts ["-Djava.awt.headless=true"
+  :jvm-opts ["-Djava.awt.headless=true" "-Dio.netty.epollBugWorkaround=true"
              "-server" "-XX:+UseConcMarkSweepGC" "-Xmx2g" "-XX:NewSize=1g"]
   :main grimoire.core)
