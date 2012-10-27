@@ -98,19 +98,27 @@
     (javascript-tag "var source = new EventSource('/stats-events');")
     (javascript-tag "source.addEventListener('message', function(event) { console.log(JSON.parse(event.data)) })")]))
 
-;; FIXME wrap result in 'wrap-aleph-handler'
+(defn ^:private pipeline-error-handler
+  [ch error]
+  (let [message (.getMessage ^Exception error)]
+    (log/error "pipeline" message)
+    (respond ch {"error" message})))
+
 (defmacro defpipeline
   [name & tasks]
   `(defn ~name
-     [response-channel# request#]
-     (run-pipeline request#
-                   {:error-handler (fn [error#]
-                                     (let [message# (.getMessage ^Exception error#)]
-                                       (log/error "pipeline" message#)
-                                       (respond response-channel# {"error" message#})))}
-                   ~@tasks
-                   (fn [response#]
-                     (respond response-channel# response#)))))
+     ;; [req#]
+     []
+     ;; ((wrap-aleph-handler
+     (wrap-aleph-handler
+      (fn [channel# request#]
+        (run-pipeline request#
+                      {:error-handler (partial pipeline-error-handler channel#)}
+                      ~@tasks
+                      (fn [response#]
+                        (respond channel# response#)))))
+     ;;   req#)
+     ))
 
 ;; (clojure.pprint/pprint (macroexpand '(defpipeline setup)))
 
@@ -124,18 +132,26 @@
     (let [{{:keys [user-id]} :route-params} request]
       {:node (registry/get-location (read-string user-id))})))
 
+;; (clojure.pprint/pprint (macroexpand '(defasync create-event-data-response-2)))
+
+;; guard for exception
+;; java.lang.NumberFormatException
 (defn action-handler
   [response-channel request]
-  (let [event-channel (map* generate-string (channel))
+  (let [chunk-channel (map* generate-string (channel))
         {{:keys [user-id action verb]} :route-params} request
-        body (decode-json (:body request))]
-    (session/update (read-string user-id) event-channel action verb body)
+        message {:action (keyword action)
+                 :verb (keyword verb)
+                 :body (decode-json (:body request))}]
+    (session/update (read-string user-id) chunk-channel message)
     (enqueue response-channel
              {:status 200
               :headers {"Content-Type" "application/json"}
-              :body event-channel})))
+              :body chunk-channel})))
 
-(defn ^:private create-event-data-response
+(clojure.pprint/pprint (macroexpand '(defasync action action-handler)))
+
+(defn create-event-data-response
   [response-channel event-channel]
   (enqueue response-channel
            {:status 200
@@ -174,18 +190,18 @@
    :headers {}
    :body ""})
 
+;; :level (level/update action)
+;; :map (map/update action)
+
 (def handlers
   (routes
    (GET "/" [] (index 123))
-   (GET ["/:user-id/setup", :user-id #"[0-9]+"] [] (wrap-aleph-handler setup-handler))
-   (GET ["/:user-id/where-is", :user-id #"[0-9]+"] [] (wrap-aleph-handler
-                                                       where-is-handler))
-   (GET ["/:user-id/events", :user-id #"[0-9]+"] [] (wrap-aleph-handler
-                                                     session-events-handler))
-   (POST ["/:user-id/:action/:verb", :user-id #"[0-9]+"] [] (wrap-aleph-handler
-                                                             action-handler))
-   (GET ["/stats-events"] [] (wrap-aleph-handler stats-events-handler))
-   (GET ["/stats"] [] (stats-index))
+   (GET "/:user-id/where-is" [] (where-is-handler))
+   (GET "/:user-id/events" [] (wrap-aleph-handler session-events-handler))
+   (POST "/:user-id/:action/:verb" [] (wrap-aleph-handler action-handler))
+   (GET "/:user-id/setup" [] (setup-handler))
+   (GET "/stats-events" [] (wrap-aleph-handler stats-events-handler))
+   (GET "/stats" [] (stats-index))
    (GET "/bench" [] (wrap-aleph-handler bench-handler))
    (GET "/noop" [] (noop-handler))
    (route/resources "/")

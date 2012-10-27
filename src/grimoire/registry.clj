@@ -13,25 +13,27 @@
 (def ^:dynamic *client* nil)
 
 (defn ^:private to-zk-location
-  [user-id & nodes]
-  (str registry-group-name "/" user-id (clojure.string/join "/" nodes)))
+  [user-id & z-nodes]
+  (str registry-group-name "/" user-id (clojure.string/join "/" z-nodes)))
 
 (defn register
-  [user-id valid-until node]
-  (let [user-node (to-zk-location user-id)
-        lock-node (str user-node "/_lock-")]
-    (let [create-response (zk/create-all *client*
-                                         lock-node :persistent? false :sequential? true)
+  [user-id valid-until cluster-node]
+  (log/info "register" user-id valid-until cluster-node)
+  (let [user-znode (to-zk-location user-id)
+        lock-znode (str user-znode "/_lock-")]
+    (let [create-response (zk/create-all *client* lock-znode
+                                         :persistent? true :sequential? true)
           create-id (zk-util/extract-id create-response)
-          user-node-response (zk/exists *client* user-node)]
+          user-node-response (zk/exists *client* user-znode)]
       (if (= 0 create-id)
-        (zk/set-data *client* user-node
-                     (cluster/serialize {:valid-until valid-until :node node})
+        (zk/set-data *client* user-znode
+                     (cluster/serialize {:valid-until valid-until :node cluster-node})
                      (:version user-node-response))
         (throw (Exception. (format "session_already_registered, args=[%s]" user-id)))))))
 
 (defn deregister
   [user-id]
+  (log/info "deregister" user-id (to-zk-location user-id))
   (zk/delete-all *client* (to-zk-location user-id)))
 
 (defn extend-timeout
@@ -49,12 +51,12 @@
 
 (defn get-node-data
   [user-id]
-  (:data (zk/exists *client* (to-zk-location user-id))))
+  (let [response (zk/data *client* (to-zk-location user-id))]
+    (cluster/deserialize (:data response))))
 
 (defn get-location
   [user-id]
-  (log/info "get-location" user-id)
-  (:node (get-node-data (to-zk-location user-id))))
+  (:node (get-node-data user-id)))
 
 (defn local?
   [user-id]
@@ -72,6 +74,7 @@
   (when (nil? (zk/exists *client* registry-group-name))
     (zk/create *client* registry-group-name :persistent? true)))
 
+;; TODO check for dev environment
 (defn ^:private dev-clean
   []
   (let [remote-nodes (cluster/get-remote-nodes)]

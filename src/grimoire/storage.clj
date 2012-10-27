@@ -26,15 +26,18 @@
 
 (defn get-data
   [^Integer user-id]
-  (try
-    (let [s3-object (s3/get-object credentials bucket (id-to-storage-key user-id))]
-      (slurp (:content s3-object)))
-    (catch AmazonS3Exception exception
-      (when-not (= (.getErrorCode exception) "NoSuchKey")
-        (log/error (.getMessage exception)))))
+  (log/info "get-data" user-id)
+  ;; (try
+  ;;   (let [s3-object (s3/get-object credentials bucket (id-to-storage-key user-id))]
+  ;;     (slurp (:content s3-object)))
+  ;;   (catch AmazonS3Exception exception
+  ;;     (when-not (= (.getErrorCode exception) "NoSuchKey")
+  ;;       (log/error (.getMessage exception)))))
   nil)
 
 (defn put-data
   [^Integer user-id ^String json]
-  (s3/put-object credentials bucket (id-to-storage-key user-id) json)
+  (log/info "put-data" user-id)
+  (let [result (s3/put-object credentials bucket (id-to-storage-key user-id) json)]
+    (log/info "put-data" result))
   nil)

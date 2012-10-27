@@ -14,8 +14,8 @@
    2 {:name "contract 2" :duration 4 :reward 22}
    3 {:name "contract 3" :duration 6 :reward 30}})
 
-(def default-width 100)
-(def default-height 100)
+(def default-width 10)
+(def default-height 10)
 
 (defn ^:private m-keyword
   ([x y]
@@ -26,37 +26,13 @@
 (defn generate-empty-map
   ;; Creates an empty map of the structure {:x1y1 nil :x1y2 nil}
   [width height]
-  (reduce
-   #(assoc %1 (m-keyword %2) nil) {} (map vector (range width) (range height))))
+  (let [m (reduce
+           #(assoc! %1 (m-keyword %2) nil)
+           (transient {})
+           (mapcat (fn [x] (for [y (range width)] [x y])) (range height)))]
+    (persistent! m)))
 
-(def start-map (generate-empty-map default-width default-height))
-
-;; (defmacro defaction
-;;   [name body]
-;;   `(defn ~name
-;;      [request-body#]
-;;      (fn [channel# state#]
-;;        (try
-;;          (let [result-map# (~@body state# (:body request-body#))]
-;;            ;; (enqueue-and-close channel# (:response result-map#))
-;;            (enqueue channel# (:response result-map#))
-;;            (:result result-map#))
-;;          (catch Exception e#
-;;            (log/error "update failed with" (.getMessage e#))
-;;            (when-not (closed? channel#)
-;;              ;; (enqueue-and-close channel# {"error" "fatal"})
-;;              (enqueue channel# {"error" "fatal"})
-;;              state#))))))
-
-;; (defaction update
-;;   (fn [state {:keys [id x y]}]
-;;     (let [entity-config (example-entities id)
-;;           coord-key (m-keyword x y)
-;;           entity (get-in state [:map coord-key])]
-;;       (-> state
-;;           (assoc-in [:map coord-key] {:id id})
-;;           (update-in [:balance] - (:cost entity-config))
-;;           build-response))))
+(def empty-map (memoize generate-empty-map))
 
 (defmulti update :verb)
 
