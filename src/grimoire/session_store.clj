@@ -6,21 +6,20 @@
 
 (defn num-sessions [] (count @store))
 
+(defn exists?
+  [user-id]
+  (not (nil? (@store user-id))))
+
 (defn get
   [user-id]
-  (log/info "get")
-  (if-let [session (@store user-id)]
-    session
-    (throw (Exception. (format "session_not_running, args=[%s]" user-id)))))
+  (@store user-id))
 
 (defn put
   [user-id session]
-  (log/info "put")
   (if (nil? (@store user-id))
     (swap! store assoc user-id session)
     (throw (Exception. (format "session_already_running, args=[%s]" user-id)))))
 
 (defn remove
   [user-id]
-  (log/info "remove")
   (swap! store dissoc user-id))

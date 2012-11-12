@@ -16,6 +16,15 @@
 
 ;; (defonce nrepl-server (start-server :port 7888))
 
+(defn run-test
+  [users]
+  (dotimes [user-id users]
+    (session/setup user-id)
+    (when (= (rem user-id 1000) 0)
+      ;; (log/info (str "done" user-id "so far"))
+      )
+    ))
+
 (defn start
   [options]
   (println "Starting server...")

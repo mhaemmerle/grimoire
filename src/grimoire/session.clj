@@ -1,7 +1,7 @@
 (ns grimoire.session
   (:use [lamina core executor])
-  (:import (org.jboss.netty.util HashedWheelTimer Timeout TimerTask))
-  (:import (java.util.concurrent TimeUnit))
+  (:import (org.jboss.netty.util HashedWheelTimer Timeout TimerTask)
+           (java.util.concurrent TimeUnit))
   (:require [grimoire
              [config :as config]
              [registry :as registry]
@@ -9,69 +9,109 @@
              [storage :as storage]
              [user :as user]
              [game :as game]
-             [session-store :as store]]
+             [session-store :as store]
+             [util :as util]]
             [clojure.tools.logging :as log]))
 
 (defonce ^:private ^HashedWheelTimer hashed-wheel-timer (HashedWheelTimer.))
 
 (defn get-expire-time
   []
-  (+ (System/currentTimeMillis) (:session-timeout config/system)))
+  (+ (System/currentTimeMillis)
+     (:session-timeout config/system)))
 
-(defn register-event-channel
-  [user-id event-channel]
-  (let [session (store/get user-id)
-        stored-event-channel (:event-channel @session)]
-    (when (or (nil? stored-event-channel)
-              (closed? stored-event-channel))
-      (swap! session assoc :event-channel event-channel)))
-  nil)
+(defn- receive-in-order-with-pipeline
+  [ch]
+  (consume ch
+           :channel nil
+           :initial-value nil
+           :reduce (fn [_ event]
+                     (let [p (:pipeline event)]
+                       (p ch (dissoc event :pipeline))))))
 
-(defn- touch
-  [state]
-  (assoc state :updated-at (System/currentTimeMillis)))
+(defn- generic-event-stage
+  [event]
+  (let [{:keys [user-id function args]} event
+        session (store/get user-id)]
+    (util/log-with-thread "generic-event-stage - start sleep")
+    (Thread/sleep 5000)
+    (util/log-with-thread "generic-event-stage - done sleeping")
+    (apply function session args)))
 
-;; maybe to tightly coupled with game actions '(game/get-update-function ...'
-;; maybe (if (game-action? ...
-(defn- execute-update
-  [message]
-  (log/info "exec")
-  (let [{:keys [user-id chunk-channel]} message
-        session (store/get user-id)
-        state (:state @session)
-        update-fn (partial (game/get-update-function message) chunk-channel)
-        new-state (update-fn state)]
-    ;; touch could be soulved via :post
-    (swap! session assoc :state (touch new-state))))
-
-(defn update
-  [user-id chunk-channel message]
-  (let [session (store/get user-id)
-        request-queue (:request-queue @session)
-        new-message (assoc message :user-id user-id :chunk-channel chunk-channel)]
-    (enqueue request-queue new-message)
-    nil))
-
-(defn- cancel-timeout
-  [user-id timeout-type]
-  (log/info "cancel-timeout" user-id timeout-type)
+(defn- get-request-channel
+  [user-id]
   (let [session (store/get user-id)]
-    (.cancel ^Timeout (timeout-type @session))))
+    (:request-channel @session)))
 
-;; FIXME write try/catch macro specifically for this
+(defn- enqueue-event
+  [user-id event]
+  (enqueue (get-request-channel user-id) event))
+
+(defn- close-request-channel
+  [user-id]
+  (let [session (store/get user-id)
+        request-channel (:request-channel @session)]
+    (close request-channel)))
+
+(defn get-event-channel
+  [user-id]
+  (let [session (store/get user-id)
+        event-channel (:event-channel @session)]
+    (if (or (nil? event-channel)
+            (closed? event-channel))
+      (let [new-event-channel (channel)]
+        (swap! session assoc :event-channel new-event-channel)
+        new-event-channel)
+      event-channel)))
+
+(defn- wrap-state-update-fn
+  [update-fn]
+  (fn [session & args]
+    (let [result-map (apply update-fn (:state @session) args)]
+      (swap! session assoc :state (:state result-map))
+      (:response result-map))))
+
+(defn- get-game-event-pipeline
+  [& {:keys [async?] :or {:async? false} :as options}]
+  (let [event-stage (if async?
+                      #(task (generic-event-stage %))
+                      generic-event-stage)]
+    (fn [request-channel event]
+      (run-pipeline event
+                    {:error-handler (fn [e]
+                                      (log/error "game_event_pipeline_error" e event)
+                                      (error request-channel e)
+                                      (enqueue-and-close (:response-channel event)
+                                                         {:error (.getMessage e)}))}
+                    event-stage
+                    #(enqueue-and-close (:response-channel event) %)))))
+
+(defn enqueue-game-event
+  [user-id game-event & {:keys [response-channel] :as options}]
+  (if-let [session (store/get user-id)]
+    (let [request-channel (:request-channel @session)]
+      (if (closed? request-channel)
+        (enqueue-and-close response-channel {:error "request_channel_is_closed"})
+        (let [f (wrap-state-update-fn (game/get-update-function game-event))
+              event {:user-id user-id
+                     :function f
+                     :pipeline (get-game-event-pipeline)
+                     :response-channel response-channel
+                     :close? true
+                     :reload-on-error? true
+                     :args nil}]
+          (enqueue request-channel event))))
+    (throw (Exception. (format "session_not_running, args=[%s]" user-id)))))
+
 (defn- clean-timeouts
   [session]
-  (let [^Timeout session-timeout (:session-timeout session)
-        ^Timeout save-timeout (:save-timeout session)]
-    (log/info "clean-timeouts" session-timeout save-timeout)
+  (doseq [timeout-type [:session-timeout :save-timeout]]
     (try
-      (.cancel session-timeout)
+      (.cancel ^Timeout (timeout-type @session))
       (catch Exception e
-        (log/error "canceling session-timeout failed" (.getMessage e))))
-    (try
-      (.cancel save-timeout)
-      (catch Exception e
-        (log/error "canceling save-timeout failed" (.getMessage e))))))
+        (log/error "clean-timeouts" (.getMessage e)))
+      (finally
+       (swap! session assoc timeout-type nil)))))
 
 (defn- save-to-storage
   [user-id state]
@@ -84,15 +124,17 @@
   (when-not (nil? ch)
     (try
       (close ch)
-      (catch Exception e))))
+      (catch Exception e
+        (log/error "safe-close-channel" (.getMessage e))))))
 
 (defn- clean
   [user-id]
   (log/info "clean" user-id)
-  (let [session (store/get user-id)]
-    (safe-close-channel (:remote-channel @session))
-    (safe-close-channel (:event-channel @session))
-    (clean-timeouts @session)
+  (let [session (store/get user-id)
+        channel-keys [:remote-channel :event-channel]]
+    (doseq [channel-key channel-keys]
+      (safe-close-channel (channel-key @session)))
+    (clean-timeouts session)
     (store/remove user-id)
     (registry/deregister user-id))
   nil)
@@ -103,127 +145,165 @@
     (log/info "should-save?" answer)
     answer))
 
-;; TODO make sure request queue is empty
-;; long-running saves and session timeouts interfere with each other
-;; they NEED to be queued
 (defn- stop
   [user-id]
   (log/info "stop" user-id)
   (let [session (store/get user-id)
         state (:state @session)
-        request-queue (:request-queue @session)]
-    (clean-timeouts @session)
-    (if (should-save? state)
+        request-channel (:request-channel @session)]
+    (close request-channel)
+    (clean-timeouts session)
+    (when (should-save? state)
       (try
-        (do
-          (save-to-storage user-id state)
-          (clean user-id))
+        (save-to-storage user-id (assoc state :saved-at (System/currentTimeMillis)))
         (catch Exception e
-          (log/error (.getMessage e) user-id)))
-      (clean user-id))
+          (log/error "stop" (.getMessage e) user-id))))
+    (clean user-id)
     nil))
 
 (defn- get-timeout
-  [user-id delay timeout-fn]
+  [delay timeout-fn]
   (let [timer-task (reify org.jboss.netty.util.TimerTask
                      (^void run [this ^Timeout timeout]
-                       (timeout-fn timeout user-id)))]
+                       (timeout-fn timeout)))]
     (.newTimeout hashed-wheel-timer timer-task delay (TimeUnit/MILLISECONDS))))
 
 (defn- renew-timeout
   [user-id delay timeout-type timeout-fn]
   (log/info "renew-timeout" user-id timeout-type timeout-fn)
-  (cancel-timeout user-id timeout-type)
-  (let [session (store/get user-id)
-        timeout (get-timeout user-id delay timeout-fn)]
-    (swap! session assoc timeout-type timeout)))
+  (let [session (store/get user-id)]
+    (.cancel ^Timeout (timeout-type @session))
+    (swap! session assoc timeout-type (get-timeout delay
+                                                   (partial timeout-fn user-id)))))
 
 (defn- session-timeout-handler
-  [^:Timeout timeout user-id]
+  [user-id ^:Timeout timeout]
   (log/info "session-timeout-handler" user-id timeout)
-  (future
-    (stop user-id)))
+  (future (stop user-id)))
 
 (declare save-timeout-handler)
 
-(defn maybe-save
-  [user-id]
-  (let [session (store/get user-id)
-        state (:state @session)
+(defn- periodic-save
+  [session user-id]
+  (log/info "periodic-save" user-id)
+  (let [new-state (assoc (:state @session) :saved-at (System/currentTimeMillis))
         save-interval (config/system :save-interval)]
-    ;; FIXME must enqueue auto-/final save in normal request-queue
-    (when (should-save? state)
-      (try
-        (do
-          (save-to-storage user-id state)
-          (swap! session assoc-in [:state :saved-at] (System/currentTimeMillis)))
-        (catch Exception e
-          (log/error (.getMessage e) user-id))
-        (finally
-         (renew-timeout user-id save-interval :save-timeout save-timeout-handler))))
-    nil))
+    (save-to-storage user-id new-state)
+    (swap! session assoc :state new-state)))
+
+(defn- pipeline-with-finally
+  [finally-fn & {:keys [async?] :or {:async? false} :as options}]
+  (let [event-stage (if async?
+                      #(task (generic-event-stage %))
+                      generic-event-stage)
+        finally-stage (fn [_]
+                        (finally-fn))]
+    (fn [request-channel event]
+      (run-pipeline event
+                    {:error-handler (fn [e]
+                                      (log/error "pipeline_error" e event)
+                                      (finally-fn))}
+                    event-stage
+                    finally-stage))))
 
 (defn- save-timeout-handler
-  [^:Timeout timeout user-id]
-  (log/info "save-timeout-handler" user-id timeout)
-  (future
-    (maybe-save user-id)))
+  [user-id ^:Timeout timeout]
+  (log/info "save-timeout-handler")
+  (let [state (:state @(store/get user-id))
+        save-interval (config/system :save-interval)
+        renew-fn #(renew-timeout user-id save-interval :save-timeout
+                                 save-timeout-handler)]
+    (if (should-save? state)
+      (let [event {:user-id user-id
+                   :function periodic-save
+                   :pipeline (pipeline-with-finally renew-fn :async? true)
+                   :response-channel nil
+                   :reload-on-error false
+                   :args '(user-id)}]
+        (enqueue-event user-id event))
+      (renew-fn))))
 
-;; FIXME implement remote message handling example
+;; not yet implemented
 (defn handle-remote-message
   [msg]
   (log/info "handle-remote-message" msg))
 
 (defn- start
   [user-id state]
-  (let [remote-channel (named-channel (keyword (str user-id)) (fn [_]))
-        request-queue (channel)
-        session-timeout (get-timeout user-id
-                                     (config/system :session-timeout)
-                                     session-timeout-handler)
-        save-timeout (get-timeout user-id (config/system :save-interval)
-                                  save-timeout-handler)
+  (log/info "start")
+  (let [remote-channel (named-channel (keyword (str user-id)) nil)
+        request-channel (channel)
+        session-timeout (get-timeout (config/system :session-timeout)
+                                     (partial session-timeout-handler user-id))
+        save-timeout (get-timeout (config/system :save-interval)
+                                  (partial save-timeout-handler user-id))
         session (atom {:state state
-                       :request-queue request-queue
+                       :request-channel request-channel
                        :event-channel nil
                        :remote-channel remote-channel
                        :session-timeout session-timeout
                        :save-timeout save-timeout})]
-    (receive-in-order request-queue execute-update)
+    (receive-in-order-with-pipeline request-channel)
     (store/put user-id session)
     (receive-all remote-channel handle-remote-message))
   nil)
 
+(defn- try-restart
+  [user-id]
+  (log/info "try-testart")
+  (let [session (store/get user-id)
+        request-channel (:request-channel @session)]
+    (if (closed? request-channel)
+      (let [new-request-channel (channel)]
+        (receive-in-order-with-pipeline new-request-channel)
+        (swap! session assoc :request-channel request-channel)
+        (user/to-json (:state @session)))
+      (throw (Exception. (format "session_still_running, args=[%s]" user-id))))))
+
 (defn- load-user
   [user-id]
+  (log/info "load-user")
   (let [result (storage/get-data user-id)]
     (if (nil? result)
       (user/new user-id)
       (user/from-json result))))
 
-(defn setup
+(defn- load-and-start
   [user-id]
+  (log/info "load-and-start")
   (registry/register user-id (get-expire-time) (node/get-node-name))
   (try
     (let [state (load-user user-id)]
       (start user-id state)
       (user/to-json state))
     (catch Exception e
-      (log/error (.getMessage e) user-id)
+      (log/error "setup_failed" (.getMessage e) user-id)
       (clean user-id)
       (throw (Exception. (format "session_start_failed, args=[%s]" user-id))))))
 
+(defn setup
+  [user-id]
+  (log/info "setup")
+  (if (and (store/exists? user-id)
+           (registry/registered? user-id)
+           (registry/local? user-id))
+    (try-restart user-id)
+    (load-and-start user-id)))
+
 (defn run-bench
   []
-  (let [runs 1000
-        global-start (* (node/get-node-id) runs)]
-    (Thread/sleep 5000)
+  (log/info "run-bench" (node/get-node-id))
+  ;; (let [runs 1000
+  (let [runs 10
+        ;; global-start (* (node/get-node-id) runs)]
+        global-start (* 0 runs)]
+    ;; (Thread/sleep 5000)
     (dotimes [j runs]
-      (let [batch-size 5000
+      (let [batch-size 100
             start (+ global-start (* j batch-size))
             end (+ start batch-size)
-            the-range (range start end)
-            t (time (doseq [i the-range] (setup i)))]
-        (log/info t))
-      (log/info (store/num-sessions))
-      (Thread/sleep 1000))))
+            the-range (range start end)]
+        (time (doseq [i the-range] (setup i))))
+      (log/info "num-sessions" (store/num-sessions))
+      ;; (Thread/sleep 1000)
+      )))

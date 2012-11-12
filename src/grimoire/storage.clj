@@ -26,7 +26,7 @@
 
 (defn get-data
   [^Integer user-id]
-  (log/info "get-data" user-id)
+  ;; (log/info "get-data" user-id)
   ;; (try
   ;;   (let [s3-object (s3/get-object credentials bucket (id-to-storage-key user-id))]
   ;;     (slurp (:content s3-object)))
@@ -37,7 +37,7 @@
 
 (defn put-data
   [^Integer user-id ^String json]
-  (log/info "put-data" user-id)
-  (let [result (s3/put-object credentials bucket (id-to-storage-key user-id) json)]
-    (log/info "put-data" result))
+  ;; (log/info "put-data" user-id)
+  ;; (let [result (s3/put-object credentials bucket (id-to-storage-key user-id) json)]
+  ;;   (log/info "put-data" result))
   nil)

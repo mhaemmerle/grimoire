@@ -38,17 +38,17 @@
 
 (defupdate update :add
   (fn [state {:keys [id x y]}]
+    ;; (log/info "add" (Thread/currentThread))
+    ;; (Thread/sleep 10000)
     (let [entity-config (example-entities id)
           coord-key (m-keyword x y)
           entity (get-in state [:map coord-key])]
-      ;; (if (nil? entity)
+      (if (nil? entity)
         (-> state
             (assoc-in [:map coord-key] {:id id})
             (update-in [:balance] - (:cost entity-config))
-            build-response)
-        ;; (throw (Exception. (format "map_position_not_empty,
-        ;; args=[%s,%s]" x y))))
-        )))
+            to-result-map)
+        (throw (Exception. (format "map_position_not_empty, args=[%s,%s]" x y)))))))
 
 (defupdate update :start-contract
   (fn [state {:keys [id x y]}]
@@ -59,11 +59,10 @@
         (-> state
             (update-in [:map coord-key] merge
                        {:contract-start (System/currentTimeMillis) :contract-id id})
-            build-response)
+            to-result-map)
         (throw (Exception. (format "start_contract_failed, args=[%s, %s]"
                                    (:id state) entity)))))))
-
-(defn ^:private collectible?
+(defn ^:private collectable?
   [entity]
   {:pre [(has-keys? entity :contract-start :contract-id)]}
   (let [contract-config (example-contracts (:contract-id entity))
@@ -74,10 +73,10 @@
   (fn [state {:keys [x y]}]
     (let [coord-key (m-keyword x y)
           entity (get-in state [:map coord-key])]
-      (if (collectible? entity)
+      (if (collectable? entity)
         (-> state
             (assoc-in [:map coord-key] (dissoc entity :contract-start :contract-id))
             (update-in [:balance] - (:reward (example-contracts (:contract-id entity))))
-            build-response)
+            to-result-map)
         (throw (Exception. (format "collect_contract_failed, args=[%s, %s]"
                                    (:id state) entity)))))))

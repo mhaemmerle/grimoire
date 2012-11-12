@@ -5,8 +5,8 @@
              [map :as map]]))
 
 (defn get-update-function
-  [action]
-  (case (:action action)
-    :level (level/update action)
-    :map (map/update action)
-    (throw (Exception. "no_update_function_found, args=[%s]" action))))
+  [event]
+  (case (:action event)
+    :level (level/update event)
+    :map (map/update event)
+    (throw (Exception. "no_update_function_found, args=[%s]" event))))

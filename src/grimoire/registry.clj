@@ -18,7 +18,7 @@
 
 (defn register
   [user-id valid-until cluster-node]
-  (log/info "register" user-id valid-until cluster-node)
+  ;; (log/info "register" user-id valid-until cluster-node)
   (let [user-znode (to-zk-location user-id)
         lock-znode (str user-znode "/_lock-")]
     (let [create-response (zk/create-all *client* lock-znode
@@ -29,7 +29,8 @@
         (zk/set-data *client* user-znode
                      (cluster/serialize {:valid-until valid-until :node cluster-node})
                      (:version user-node-response))
-        (throw (Exception. (format "session_already_registered, args=[%s]" user-id)))))))
+        (throw
+         (Exception. (format "session_already_registered, args=[%s]" user-id)))))))
 
 (defn deregister
   [user-id]
@@ -60,13 +61,11 @@
 
 (defn local?
   [user-id]
-  (log/info "is user local?")
-  (let [user-node-name (:node (get-node-data (to-zk-location user-id)))]
+  (let [user-node-name (:node (get-node-data user-id))]
     (= user-node-name (node/get-node-name))))
 
 (defn registered?
   [user-id]
-  (log/info "is user registered?")
   (not (nil? (get-node-data user-id))))
 
 (defn ^:private create-registry-group
@@ -91,8 +90,7 @@
 
 (defn b-fn
   [i]
-  (zk/create *client* (to-zk-location i))
-  )
+  (zk/create *client* (to-zk-location i)))
 
 ;; (future
 ;;   (do

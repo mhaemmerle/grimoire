@@ -1,8 +1,8 @@
 (ns grimoire.config)
 
 (defonce system
-  {:save-interval 240000
-   :session-timeout 480000
+  {:save-interval 60000
+   :session-timeout 300000
    :session-version 1})
 
 (defonce facebook
@@ -13,9 +13,9 @@
    :canvas-url ""})
 
 (defonce zookeeper
-  [{:port 2181 :host "127.0.01"}
-   {:port 2181 :host "127.0.01"}
-   {:port 2181 :host "127.0.01"}])
+  [{:port 2181 :host "127.0.0.1"}
+   {:port 2181 :host "127.0.0.1"}
+   {:port 2181 :host "127.0.0.1"}])
 
 (defonce aws
   {:access-key ""

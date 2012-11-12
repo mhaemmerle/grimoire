@@ -21,7 +21,7 @@
   [user-id & name]
   (let [current-time (System/currentTimeMillis)
         current-version (:session-version config/system)
-        default-map (game-map/empty-map 5 5)]
+        default-map (game-map/empty-map 7 7)]
     {:id user-id
      :name (or name "John Doe")
      :points 0

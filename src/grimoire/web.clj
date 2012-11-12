@@ -12,10 +12,9 @@
             [grimoire
              [node :as node]
              [session :as session]
-             [storage :as storage]
-             [user :as user]
              [registry :as registry]
-             [config :as config]])
+             [config :as config]
+             [util :as util]])
   (:import org.codehaus.jackson.JsonParseException)
   ;; index/stats html imports
   ;; TODO move to template ns
@@ -34,7 +33,7 @@
    :headers {"Content-Type" "application/json"}
    :body (generate-string (or data {}))})
 
-(defn ^:private encode-event-data
+(defn- encode-event-data
   [data]
   (str "data:" (generate-string data) "\n\n"))
 
@@ -77,11 +76,13 @@
    (include-js path)
    (javascript-tag init)))
 
+(def page-title "Grimoire")
+
 (defn index
   [user-id]
   (html5
    [:head
-    [:title "grimoire"]]
+    [:title (page-title)]]
    [:body
     [:div {:id "content"} ""]
     (run-clojurescript
@@ -92,66 +93,60 @@
   []
   (html5
    [:head
-    [:title "stats"]]
+    [:title (page-title)]]
    [:body
     ;; http://goo.gl/QrXDs
     (javascript-tag "var source = new EventSource('/stats-events');")
     (javascript-tag "source.addEventListener('message', function(event) { console.log(JSON.parse(event.data)) })")]))
 
-(defn ^:private pipeline-error-handler
+(defn- pipeline-error-handler
   [ch error]
   (let [message (.getMessage ^Exception error)]
     (log/error "pipeline" message)
     (respond ch {"error" message})))
 
+;; Use lamina.executor/task's for potentially long-running operations
+;; in the pipeline. The server handler will return immediatle to it's pool
+;; and aleph/lamina will take care of responding to the client at some
+;; later point.
 (defmacro defpipeline
   [name & tasks]
   `(defn ~name
-     ;; [req#]
      []
-     ;; ((wrap-aleph-handler
      (wrap-aleph-handler
       (fn [channel# request#]
         (run-pipeline request#
                       {:error-handler (partial pipeline-error-handler channel#)}
                       ~@tasks
                       (fn [response#]
-                        (respond channel# response#)))))
-     ;;   req#)
-     ))
-
-;; (clojure.pprint/pprint (macroexpand '(defpipeline setup)))
+                        (respond channel# response#)))))))
 
 (defpipeline setup-handler
-  (fn [request]
-    (let [{{:keys [user-id]} :route-params} request]
+  #(task
+    (let [{{:keys [user-id]} :route-params} %]
       (session/setup (read-string user-id)))))
 
 (defpipeline where-is-handler
-  (fn [request]
-    (let [{{:keys [user-id]} :route-params} request]
+  #(task
+    (let [{{:keys [user-id]} :route-params} %]
       {:node (registry/get-location (read-string user-id))})))
 
-;; (clojure.pprint/pprint (macroexpand '(defasync create-event-data-response-2)))
-
-;; guard for exception
-;; java.lang.NumberFormatException
+;; FIXME should guard for exception (java.lang.NumberFormatException)
 (defn action-handler
   [response-channel request]
   (let [chunk-channel (map* generate-string (channel))
         {{:keys [user-id action verb]} :route-params} request
-        message {:action (keyword action)
-                 :verb (keyword verb)
-                 :body (decode-json (:body request))}]
-    (session/update (read-string user-id) chunk-channel message)
+        game-event {:action (keyword action)
+                    :verb (keyword verb)
+                    :body (decode-json (:body request))}]
+    (session/enqueue-game-event (read-string user-id) game-event
+                                :response-channel chunk-channel)
     (enqueue response-channel
              {:status 200
               :headers {"Content-Type" "application/json"}
               :body chunk-channel})))
 
-(clojure.pprint/pprint (macroexpand '(defasync action action-handler)))
-
-(defn create-event-data-response
+(defn- respond-chunked
   [response-channel event-channel]
   (enqueue response-channel
            {:status 200
@@ -160,24 +155,26 @@
 
 (defn session-events-handler
   [response-channel request]
-  (let [event-channel (channel)
-        {{:keys [user-id]} :route-params} request]
-    (session/register-event-channel (read-string user-id) event-channel)
-    (create-event-data-response response-channel event-channel)))
+  (let [{{:keys [user-id]} :route-params} request
+        event-channel (session/get-event-channel (read-string user-id))]
+    (respond-chunked response-channel event-channel)))
 
 (defn stats-events-handler
   [response-channel request]
   (let [event-channel (channel)]
     (node/register-stats-channel event-channel)
-    (create-event-data-response response-channel event-channel)))
+    (respond-chunked response-channel event-channel)))
 
 ;; TODO move to bench/test namespace
 (defn bench-handler
   [response-channel request]
   (let [event-channel (map* generate-string (channel))
         user-id (Integer/parseInt "123")]
-    (session/update user-id event-channel "map" "add"
-                    {:id 1 :x (rand-int 100) :y (rand-int 100)})
+    (session/enqueue-game-event user-id
+                                {:action (keyword "map")
+                                 :verb (keyword "add")
+                                 :body {:id 1 :x (rand-int 100) :y (rand-int 100)}}
+                                :response-channel event-channel)
     (enqueue response-channel
              {:status 200
               :headers {"Content-Type" "application/json"}
@@ -188,7 +185,7 @@
   []
   {:status 200
    :headers {}
-   :body ""})
+   :body nil})
 
 ;; :level (level/update action)
 ;; :map (map/update action)

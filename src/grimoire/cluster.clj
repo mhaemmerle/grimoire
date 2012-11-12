@@ -9,6 +9,8 @@
              [clojure.tools.logging :as log]))
 
 ;; publish node-state to zookeeper
+;; use zk to switch nodes on and off and control amount of traffic
+;; that goes to a distinct node
 
 (def group-name "/cluster")
 
