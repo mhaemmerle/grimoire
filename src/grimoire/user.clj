@@ -17,6 +17,8 @@
                  saved-at
                  version])
 
+;; add session-token
+
 (defn new
   [user-id & name]
   (let [current-time (System/currentTimeMillis)

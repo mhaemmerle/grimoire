@@ -139,8 +139,7 @@
         game-event {:action (keyword action)
                     :verb (keyword verb)
                     :body (decode-json (:body request))}]
-    (session/enqueue-game-event (read-string user-id) game-event
-                                :response-channel chunk-channel)
+    (session/enqueue-game-event (read-string user-id) game-event chunk-channel)
     (enqueue response-channel
              {:status 200
               :headers {"Content-Type" "application/json"}

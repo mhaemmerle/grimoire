@@ -19,7 +19,7 @@
       (if (>= (:points state) (:required-points level-config))
         (-> state
             (update-in [:balance] + (:reward level-config))
-            build-response)
+            to-result-map)
         (throw (Exception.
                 (format "insufficient_points_for_level_complete, args=[%s, %s]"
                         (:id state) level)))))))

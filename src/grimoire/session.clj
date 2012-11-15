@@ -2,15 +2,14 @@
   (:use [lamina core executor])
   (:import (org.jboss.netty.util HashedWheelTimer Timeout TimerTask)
            (java.util.concurrent TimeUnit))
-  (:require [grimoire
-             [config :as config]
-             [registry :as registry]
-             [node :as node]
-             [storage :as storage]
-             [user :as user]
-             [game :as game]
-             [session-store :as store]
-             [util :as util]]
+  (:require [grimoire.config :as config]
+            [grimoire.registry :as registry]
+            [grimoire.node :as node]
+            [grimoire.storage :as storage]
+            [grimoire.user :as user]
+            [grimoire.game :as game]
+            [grimoire.session-store :as store]
+            [grimoire.util :as util]
             [clojure.tools.logging :as log]))
 
 (defonce ^:private ^HashedWheelTimer hashed-wheel-timer (HashedWheelTimer.))
@@ -19,24 +18,6 @@
   []
   (+ (System/currentTimeMillis)
      (:session-timeout config/system)))
-
-(defn- receive-in-order-with-pipeline
-  [ch]
-  (consume ch
-           :channel nil
-           :initial-value nil
-           :reduce (fn [_ event]
-                     (let [p (:pipeline event)]
-                       (p ch (dissoc event :pipeline))))))
-
-(defn- generic-event-stage
-  [event]
-  (let [{:keys [user-id function args]} event
-        session (store/get user-id)]
-    (util/log-with-thread "generic-event-stage - start sleep")
-    (Thread/sleep 5000)
-    (util/log-with-thread "generic-event-stage - done sleeping")
-    (apply function session args)))
 
 (defn- get-request-channel
   [user-id]
@@ -64,43 +45,93 @@
         new-event-channel)
       event-channel)))
 
-(defn- wrap-state-update-fn
-  [update-fn]
-  (fn [session & args]
-    (let [result-map (apply update-fn (:state @session) args)]
-      (swap! session assoc :state (:state result-map))
-      (:response result-map))))
+;; {:keys [async?] :or {:async? false} :as options}
+(defmacro build-pipeline
+  [& tasks]
+  (let [channel (gensym 'channel)]
+    `(fn [~channel value#]
+       (run-pipeline value#
+                     {:error-handler #(error ~channel %)}
+                     ~@(map
+                        (fn [s]
+                          `(fn [event#]
+                             (task (~s ~channel event#))))
+                        tasks)))))
 
-(defn- get-game-event-pipeline
-  [& {:keys [async?] :or {:async? false} :as options}]
-  (let [event-stage (if async?
-                      #(task (generic-event-stage %))
-                      generic-event-stage)]
-    (fn [request-channel event]
-      (run-pipeline event
-                    {:error-handler (fn [e]
-                                      (log/error "game_event_pipeline_error" e event)
-                                      (error request-channel e)
-                                      (enqueue-and-close (:response-channel event)
-                                                         {:error (.getMessage e)}))}
-                    event-stage
-                    #(enqueue-and-close (:response-channel event) %)))))
+;; (util/log-with-thread "generic-event-stage - start sleep")
+;; (Thread/sleep 5000)
+;; (util/log-with-thread "generic-event-stage - done sleeping")
+(defn- handle-game-event
+  [{:keys [user-id payload args] :as event}]
+  (let [session (store/get user-id)
+        result-map (apply (game/get-update-function payload) (:state @session) args)]
+    (swap! session assoc :state (:state result-map))
+    (assoc event :response (:response result-map))))
+
+(declare periodic-save)
+
+(defn- handle-system-event
+  [{:keys [user-id payload args] :as event}]
+  (log/info "handle-system-event" event)
+  (let [session (store/get user-id)]
+    (case (:action payload)
+      :periodic-save ((partial periodic-save session) args)
+      nil)))
+
+(defn- handle-event
+  [event]
+  (case (:type event)
+    :game (handle-game-event event)
+    :system (handle-system-event event)
+    event))
+
+(defn- process-event
+  [ch event]
+  (try
+    (handle-event event)
+    (catch Exception e
+      (close ch)
+      (ground ch)
+      (log/error "pipeline_error" e)
+      {:type :error
+       :receiver (:receiver event)
+       :error {:error (.getMessage e)}})))
+
+(defn- reply
+  [{:keys [type receiver response error] :as event}]
+  (case type
+    :game (if (:close? event)
+            (enqueue-and-close receiver response)
+            (enqueue receiver response))
+    :error (enqueue-and-close receiver error)
+    event))
+
+(defn- receive-in-order-with-pipeline
+  [ch]
+  (consume ch
+           :channel nil
+           :initial-value nil
+           :reduce (fn [_ event]
+                     (run-pipeline event
+                                   {:error-handler #(error ch %)}
+                                   ;; watch for async tags
+                                   #(process-event ch %)
+                                   reply))))
 
 (defn enqueue-game-event
-  [user-id game-event & {:keys [response-channel] :as options}]
+  [user-id action response-channel]
   (if-let [session (store/get user-id)]
-    (let [request-channel (:request-channel @session)]
+    (let [receiver (or response-channel (:event-channel @session))
+          request-channel (:request-channel @session)]
       (if (closed? request-channel)
-        (enqueue-and-close response-channel {:error "request_channel_is_closed"})
-        (let [f (wrap-state-update-fn (game/get-update-function game-event))
-              event {:user-id user-id
-                     :function f
-                     :pipeline (get-game-event-pipeline)
-                     :response-channel response-channel
-                     :close? true
-                     :reload-on-error? true
-                     :args nil}]
-          (enqueue request-channel event))))
+        (enqueue-and-close receiver {:error "request_channel_is_closed"})
+        (enqueue request-channel {:type :game
+                                  :user-id user-id
+                                  :receiver receiver
+                                  :close? true
+                                  :reload-on-error? true
+                                  :payload action
+                                  :args nil})))
     (throw (Exception. (format "session_not_running, args=[%s]" user-id)))))
 
 (defn- clean-timeouts
@@ -139,6 +170,12 @@
     (registry/deregister user-id))
   nil)
 
+(defn- reset
+  [user-id]
+  ;; instead of resetting the session on the setup call
+  ;; why not do it instantly?
+  )
+
 (defn- should-save?
   [state]
   (let [answer (> (:updated-at state) (:saved-at state))]
@@ -173,8 +210,8 @@
   (log/info "renew-timeout" user-id timeout-type timeout-fn)
   (let [session (store/get user-id)]
     (.cancel ^Timeout (timeout-type @session))
-    (swap! session assoc timeout-type (get-timeout delay
-                                                   (partial timeout-fn user-id)))))
+    (swap! session assoc timeout-type
+           (get-timeout delay (partial timeout-fn user-id)))))
 
 (defn- session-timeout-handler
   [user-id ^:Timeout timeout]
@@ -191,39 +228,19 @@
     (save-to-storage user-id new-state)
     (swap! session assoc :state new-state)))
 
-(defn- pipeline-with-finally
-  [finally-fn & {:keys [async?] :or {:async? false} :as options}]
-  (let [event-stage (if async?
-                      #(task (generic-event-stage %))
-                      generic-event-stage)
-        finally-stage (fn [_]
-                        (finally-fn))]
-    (fn [request-channel event]
-      (run-pipeline event
-                    {:error-handler (fn [e]
-                                      (log/error "pipeline_error" e event)
-                                      (finally-fn))}
-                    event-stage
-                    finally-stage))))
-
 (defn- save-timeout-handler
   [user-id ^:Timeout timeout]
   (log/info "save-timeout-handler")
   (let [state (:state @(store/get user-id))
-        save-interval (config/system :save-interval)
-        renew-fn #(renew-timeout user-id save-interval :save-timeout
-                                 save-timeout-handler)]
-    (if (should-save? state)
-      (let [event {:user-id user-id
-                   :function periodic-save
-                   :pipeline (pipeline-with-finally renew-fn :async? true)
-                   :response-channel nil
-                   :reload-on-error false
-                   :args '(user-id)}]
-        (enqueue-event user-id event))
-      (renew-fn))))
+        save-interval (config/system :save-interval)]
+    (renew-timeout user-id save-interval :save-timeout save-timeout-handler)
+    (when (should-save? state)
+      (enqueue-event user-id {:type :system
+                              :user-id user-id
+                              :reload-on-error false
+                              :payload {:action :periodic-save}
+                              :args [user-id]}))))
 
-;; not yet implemented
 (defn handle-remote-message
   [msg]
   (log/info "handle-remote-message" msg))
