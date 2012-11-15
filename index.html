@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8" content="text/html" http-equiv="Content-Type" /><meta name="description" /><style type="text/css">/**
+<html><head><meta charset="utf-8" content="text/html" http-equiv="Content-Type"><meta name="description"><style type="text/css">/**
  * SyntaxHighlighter
  * http://alexgorbatchev.com/SyntaxHighlighter
  *
@@ -3029,7 +3029,7 @@ net.brehaut.ClojureTools = (function (SH) {
   };
 })(SyntaxHighlighter);
 </script><title>grimoire -- Marginalia</title></head><body><table><tr><td class="docs"><div class="header"><h1 class="project-name">grimoire</h1><h2 class="project-version">0.1.0-SNAPSHOT</h2><br />
-</div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.4.0</td></tr><tr><td class="dep-name">org.slf4j/slf4j-api</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.slf4j/slf4j-log4j12</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.clojure/tools.logging</td><td class="dotted"><hr /></td><td class="dep-version">0.2.3</td></tr><tr><td class="dep-name">lamina</td><td class="dotted"><hr /></td><td class="dep-version">0.5.0-SNAPSHOT</td></tr><tr><td class="dep-name">aleph</td><td class="dotted"><hr /></td><td class="dep-version">0.3.0-SNAPSHOT</td></tr><tr><td class="dep-name">zookeeper-clj</td><td class="dotted"><hr /></td><td class="dep-version">0.9.2</td></tr><tr><td class="dep-name">ring</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">hiccup</td><td class="dotted"><hr /></td><td class="dep-version">1.0.0</td></tr><tr><td class="dep-name">ring/ring-jetty-adapter</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">ring-json-params</td><td class="dotted"><hr /></td><td class="dep-version">0.1.3</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">slingshot</td><td class="dotted"><hr /></td><td class="dep-version">0.10.3</td></tr><tr><td class="dep-name">cheshire</td><td class="dotted"><hr /></td><td class="dep-version">4.0.1</td></tr><tr><td class="dep-name">clj-aws-s3</td><td class="dotted"><hr /></td><td class="dep-version">0.3.2</td></tr><tr><td class="dep-name">org.clojure/tools.cli</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr><tr><td class="dep-name">protobuf</td><td class="dotted"><hr /></td><td class="dep-version">0.6.1</td></tr><tr><td class="dep-name">org.clojure/tools.nrepl</td><td class="dotted"><hr /></td><td class="dep-version">0.2.0-beta9</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">lein-marginalia</td><td class="dotted"><hr /></td><td class="dep-version">0.7.1</td></tr><tr><td class="dep-name">criterium</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#grimoire.cluster">grimoire.cluster</a></li><li><a href="#grimoire.config">grimoire.config</a></li><li><a href="#grimoire.core">grimoire.core</a></li><li><a href="#grimoire.game">grimoire.game</a></li><li><a href="#grimoire.landing">grimoire.landing</a></li><li><a href="#grimoire.level">grimoire.level</a></li><li><a href="#grimoire.map">grimoire.map</a></li><li><a href="#grimoire.node">grimoire.node</a></li><li><a href="#grimoire.protocol">grimoire.protocol</a></li><li><a href="#grimoire.registry">grimoire.registry</a></li><li><a href="#grimoire.session">grimoire.session</a></li><li><a href="#grimoire.storage">grimoire.storage</a></li><li><a href="#grimoire.user">grimoire.user</a></li><li><a href="#grimoire.util">grimoire.util</a></li><li><a href="#grimoire.web">grimoire.web</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.cluster" name="grimoire.cluster"><h1 class="project-name">grimoire.cluster</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+</div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.4.0</td></tr><tr><td class="dep-name">org.slf4j/slf4j-api</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.slf4j/slf4j-log4j12</td><td class="dotted"><hr /></td><td class="dep-version">1.6.6</td></tr><tr><td class="dep-name">org.clojure/tools.logging</td><td class="dotted"><hr /></td><td class="dep-version">0.2.3</td></tr><tr><td class="dep-name">lamina</td><td class="dotted"><hr /></td><td class="dep-version">0.5.0-SNAPSHOT</td></tr><tr><td class="dep-name">aleph</td><td class="dotted"><hr /></td><td class="dep-version">0.3.0-beta7</td></tr><tr><td class="dep-name">zookeeper-clj</td><td class="dotted"><hr /></td><td class="dep-version">0.9.2</td></tr><tr><td class="dep-name">ring</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.1</td></tr><tr><td class="dep-name">hiccup</td><td class="dotted"><hr /></td><td class="dep-version">1.0.0</td></tr><tr><td class="dep-name">ring/ring-jetty-adapter</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">ring-json-params</td><td class="dotted"><hr /></td><td class="dep-version">0.1.3</td></tr><tr><td class="dep-name">compojure</td><td class="dotted"><hr /></td><td class="dep-version">1.1.0</td></tr><tr><td class="dep-name">slingshot</td><td class="dotted"><hr /></td><td class="dep-version">0.10.3</td></tr><tr><td class="dep-name">cheshire</td><td class="dotted"><hr /></td><td class="dep-version">4.0.3</td></tr><tr><td class="dep-name">timewarrior/clj-aws-s3</td><td class="dotted"><hr /></td><td class="dep-version">0.3.3</td></tr><tr><td class="dep-name">org.clojure/tools.cli</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr><tr><td class="dep-name">protobuf</td><td class="dotted"><hr /></td><td class="dep-version">0.6.1</td></tr><tr><td class="dep-name">clj-oauth2</td><td class="dotted"><hr /></td><td class="dep-version">0.2.0</td></tr><tr><td class="dep-name">org.clojure/tools.nrepl</td><td class="dotted"><hr /></td><td class="dep-version">0.2.0-beta9</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">criterium</td><td class="dotted"><hr /></td><td class="dep-version">0.2.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#grimoire.cluster">grimoire.cluster</a></li><li><a href="#grimoire.config">grimoire.config</a></li><li><a href="#grimoire.core">grimoire.core</a></li><li><a href="#grimoire.game">grimoire.game</a></li><li><a href="#grimoire.landing">grimoire.landing</a></li><li><a href="#grimoire.level">grimoire.level</a></li><li><a href="#grimoire.map">grimoire.map</a></li><li><a href="#grimoire.node">grimoire.node</a></li><li><a href="#grimoire.protocol">grimoire.protocol</a></li><li><a href="#grimoire.registry">grimoire.registry</a></li><li><a href="#grimoire.session">grimoire.session</a></li><li><a href="#grimoire.session-store">grimoire.session-store</a></li><li><a href="#grimoire.storage">grimoire.storage</a></li><li><a href="#grimoire.timer">grimoire.timer</a></li><li><a href="#grimoire.user">grimoire.user</a></li><li><a href="#grimoire.util">grimoire.util</a></li><li><a href="#grimoire.web">grimoire.web</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.cluster" name="grimoire.cluster"><h1 class="project-name">grimoire.cluster</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.cluster
   (:refer-clojure :exclude [join])
   (:require  [grimoire
@@ -3038,7 +3038,9 @@ net.brehaut.ClojureTools = (function (SH) {
              [zookeeper :as zk]
              [zookeeper.data :as data]
              [zookeeper.logger :as logger]
-             [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs"><p>publish node-state to zookeeper</p>
+             [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs"><p>publish node-state to zookeeper
+use zk to switch nodes on and off and control amount of traffic
+that goes to a distinct node</p>
 </td><td class="codes"></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(def group-name &quot;/cluster&quot;)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(def ^:dynamic *client* nil)</pre></td></tr><tr><td class="docs">
@@ -3113,8 +3115,8 @@ net.brehaut.ClojureTools = (function (SH) {
   (join local-port))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.config" name="grimoire.config"><h1 class="project-name">grimoire.config</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.config)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defonce system
-  {:save-interval 240000
-   :session-timeout 480000
+  {:save-interval 10000
+   :session-timeout 60000
    :session-version 1})</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defonce facebook
   {:app-id 
@@ -3123,9 +3125,9 @@ net.brehaut.ClojureTools = (function (SH) {
    :api-key 
    :canvas-url })</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defonce zookeeper
-  [{:port 2181 :host &quot;127.0.01&quot;}
-   {:port 2181 :host &quot;127.0.01&quot;}
-   {:port 2181 :host &quot;127.0.01&quot;}])</pre></td></tr><tr><td class="docs">
+  [{:port 2181 :host &quot;127.0.0.1&quot;}
+   {:port 2181 :host &quot;127.0.0.1&quot;}
+   {:port 2181 :host &quot;127.0.0.1&quot;}])</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defonce aws
   {:access-key &quot;033G2TPHEBTWC360RRG2&quot;
    :secret-key &quot;mCfw/OxodR/YDyC6qINI1VSYuw0dn1+XoGMRMDg5&quot;
@@ -3154,6 +3156,12 @@ net.brehaut.ClojureTools = (function (SH) {
             [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(set! *warn-on-reflection* true)</pre></td></tr><tr><td class="docs"><p>(defonce nrepl-server (start-server :port 7888))</p>
 </td><td class="codes"></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn run-test
+  [users]
+  (dotimes [user-id users]
+    (session/setup user-id)
+    (when (= (rem user-id 1000) 0)
+      ;; (log/info (str &quot;done&quot; user-id &quot;so far&quot;)))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn start
   [options]
   (println &quot;Starting server...&quot;)
@@ -3198,11 +3206,11 @@ net.brehaut.ClojureTools = (function (SH) {
              [level :as level]
              [map :as map]]))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn get-update-function
-  [action]
-  (case (:action action)
-    :level (level/update action)
-    :map (map/update action)
-    (throw (Exception. &quot;no_update_function_found, args=[%s]&quot; action))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.landing" name="grimoire.landing"><h1 class="project-name">grimoire.landing</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+  [event]
+  (case (:action event)
+    :level (level/update event)
+    :map (map/update event)
+    (throw (Exception. &quot;no_update_function_found, args=[%s]&quot; event))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.landing" name="grimoire.landing"><h1 class="project-name">grimoire.landing</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.landing
   (:use [ring.adapter.jetty :only [run-jetty]]
         [compojure.core]
@@ -3259,7 +3267,7 @@ net.brehaut.ClojureTools = (function (SH) {
       (if (&gt;= (:points state) (:required-points level-config))
         (-&gt; state
             (update-in [:balance] + (:reward level-config))
-            build-response)
+            to-result-map)
         (throw (Exception.
                 (format &quot;insufficient_points_for_level_complete, args=[%s, %s]&quot;
                         (:id state) level)))))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.map" name="grimoire.map"><h1 class="project-name">grimoire.map</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
@@ -3276,8 +3284,8 @@ net.brehaut.ClojureTools = (function (SH) {
   {1 {:name &quot;contract 1&quot; :duration 2 :reward 5}
    2 {:name &quot;contract 2&quot; :duration 4 :reward 22}
    3 {:name &quot;contract 3&quot; :duration 6 :reward 30}})</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(def default-width 100)
-(def default-height 100)</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(def default-width 10)
+(def default-height 10)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private m-keyword
   ([x y]
      (m-keyword [x y]))
@@ -3286,47 +3294,26 @@ net.brehaut.ClojureTools = (function (SH) {
 </td><td class="codes"><pre class="brush: clojure">(defn generate-empty-map
   ;; Creates an empty map of the structure {:x1y1 nil :x1y2 nil}
   [width height]
-  (reduce
-   #(assoc %1 (m-keyword %2) nil) {} (map vector (range width) (range height))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(def start-map (generate-empty-map default-width default-height))</pre></td></tr><tr><td class="docs"><p>(defmacro defaction
-  [name body]
-  `(defn ~name
-     [request-body#]
-     (fn [channel# state#]
-       (try
-         (let [result-map# (~@body state# (:body request-body#))]
-           ;; (enqueue-and-close channel# (:response result-map#))
-           (enqueue channel# (:response result-map#))
-           (:result result-map#))
-         (catch Exception e#
-           (log/error "update failed with" (.getMessage e#))
-           (when-not (closed? channel#)
-             ;; (enqueue-and-close channel# {"error" "fatal"})
-             (enqueue channel# {"error" "fatal"})
-             state#))))))</p>
-</td><td class="codes"></td></tr><tr><td class="docs"><p>(defaction update
-  (fn [state {:keys [id x y]}]
-    (let [entity-config (example-entities id)
-          coord-key (m-keyword x y)
-          entity (get-in state [:map coord-key])]
-      (-> state
-          (assoc-in [:map coord-key] {:id id})
-          (update-in [:balance] - (:cost entity-config))
-          build-response))))</p>
-</td><td class="codes"></td></tr><tr><td class="docs">
+  (let [m (reduce
+           #(assoc! %1 (m-keyword %2) nil)
+           (transient {})
+           (mapcat (fn [x] (for [y (range width)] [x y])) (range height)))]
+    (persistent! m)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(def empty-map (memoize generate-empty-map))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defmulti update :verb)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defupdate update :add
   (fn [state {:keys [id x y]}]
+    ;; (log/info &quot;add&quot; (Thread/currentThread))
+    ;; (Thread/sleep 10000)
     (let [entity-config (example-entities id)
           coord-key (m-keyword x y)
           entity (get-in state [:map coord-key])]
-      ;; (if (nil? entity)
+      (if (nil? entity)
         (-&gt; state
             (assoc-in [:map coord-key] {:id id})
             (update-in [:balance] - (:cost entity-config))
-            build-response)
-        ;; (throw (Exception. (format &quot;map_position_not_empty,
-        ;; args=[%s,%s]&quot; x y)))))))</pre></td></tr><tr><td class="docs">
+            to-result-map)
+        (throw (Exception. (format &quot;map_position_not_empty, args=[%s,%s]&quot; x y)))))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defupdate update :start-contract
   (fn [state {:keys [id x y]}]
     (let [coord-key (m-keyword x y)
@@ -3336,10 +3323,10 @@ net.brehaut.ClojureTools = (function (SH) {
         (-&gt; state
             (update-in [:map coord-key] merge
                        {:contract-start (System/currentTimeMillis) :contract-id id})
-            build-response)
+            to-result-map)
         (throw (Exception. (format &quot;start_contract_failed, args=[%s, %s]&quot;
-                                   (:id state) entity)))))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private collectible?
+                                   (:id state) entity)))))))
+(defn ^:private collectable?
   [entity]
   {:pre [(has-keys? entity :contract-start :contract-id)]}
   (let [contract-config (example-contracts (:contract-id entity))
@@ -3349,11 +3336,11 @@ net.brehaut.ClojureTools = (function (SH) {
   (fn [state {:keys [x y]}]
     (let [coord-key (m-keyword x y)
           entity (get-in state [:map coord-key])]
-      (if (collectible? entity)
+      (if (collectable? entity)
         (-&gt; state
             (assoc-in [:map coord-key] (dissoc entity :contract-start :contract-id))
             (update-in [:balance] - (:reward (example-contracts (:contract-id entity))))
-            build-response)
+            to-result-map)
         (throw (Exception. (format &quot;collect_contract_failed, args=[%s, %s]&quot;
                                    (:id state) entity)))))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.node" name="grimoire.node"><h1 class="project-name">grimoire.node</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.node
@@ -3522,23 +3509,26 @@ don't forget back-off</p>
 </td><td class="codes"><pre class="brush: clojure">(defonce registry-group-name &quot;/registry&quot;)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(def ^:dynamic *client* nil)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private to-zk-location
-  [user-id &amp; nodes]
-  (str registry-group-name &quot;/&quot; user-id (clojure.string/join &quot;/&quot; nodes)))</pre></td></tr><tr><td class="docs">
+  [user-id &amp; z-nodes]
+  (str registry-group-name &quot;/&quot; user-id (clojure.string/join &quot;/&quot; z-nodes)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn register
-  [user-id valid-until node]
-  (let [user-node (to-zk-location user-id)
-        lock-node (str user-node &quot;/_lock-&quot;)]
-    (let [create-response (zk/create-all *client*
-                                         lock-node :persistent? false :sequential? true)
+  [user-id valid-until cluster-node]
+  ;; (log/info &quot;register&quot; user-id valid-until cluster-node)
+  (let [user-znode (to-zk-location user-id)
+        lock-znode (str user-znode &quot;/_lock-&quot;)]
+    (let [create-response (zk/create-all *client* lock-znode
+                                         :persistent? true :sequential? true)
           create-id (zk-util/extract-id create-response)
-          user-node-response (zk/exists *client* user-node)]
+          user-node-response (zk/exists *client* user-znode)]
       (if (= 0 create-id)
-        (zk/set-data *client* user-node
-                     (cluster/serialize {:valid-until valid-until :node node})
+        (zk/set-data *client* user-znode
+                     (cluster/serialize {:valid-until valid-until :node cluster-node})
                      (:version user-node-response))
-        (throw (Exception. (format &quot;session_already_registered, args=[%s]&quot; user-id)))))))</pre></td></tr><tr><td class="docs">
+        (throw
+         (Exception. (format &quot;session_already_registered, args=[%s]&quot; user-id)))))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn deregister
   [user-id]
+  (log/info &quot;deregister&quot; user-id (to-zk-location user-id))
   (zk/delete-all *client* (to-zk-location user-id)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn extend-timeout
   [user-id valid-until]
@@ -3553,24 +3543,22 @@ don't forget back-off</p>
   (zk/delete-all *client* registry-group-name))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn get-node-data
   [user-id]
-  (:data (zk/exists *client* (to-zk-location user-id))))</pre></td></tr><tr><td class="docs">
+  (let [response (zk/data *client* (to-zk-location user-id))]
+    (cluster/deserialize (:data response))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn get-location
   [user-id]
-  (log/info &quot;get-location&quot; user-id)
-  (:node (get-node-data (to-zk-location user-id))))</pre></td></tr><tr><td class="docs">
+  (:node (get-node-data user-id)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn local?
   [user-id]
-  (log/info &quot;is user local?&quot;)
-  (let [user-node-name (:node (get-node-data (to-zk-location user-id)))]
+  (let [user-node-name (:node (get-node-data user-id))]
     (= user-node-name (node/get-node-name))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn registered?
   [user-id]
-  (log/info &quot;is user registered?&quot;)
   (not (nil? (get-node-data user-id))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private create-registry-group
   []
   (when (nil? (zk/exists *client* registry-group-name))
-    (zk/create *client* registry-group-name :persistent? true)))</pre></td></tr><tr><td class="docs">
+    (zk/create *client* registry-group-name :persistent? true)))</pre></td></tr><tr><td class="docs"><p>TODO check for dev environment</p>
 </td><td class="codes"><pre class="brush: clojure">(defn ^:private dev-clean
   []
   (let [remote-nodes (cluster/get-remote-nodes)]
@@ -3596,171 +3584,310 @@ don't forget back-off</p>
 </td><td class="codes"></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.session" name="grimoire.session"><h1 class="project-name">grimoire.session</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.session
   (:use [lamina core executor])
-  (:import (org.jboss.netty.util HashedWheelTimer Timeout TimerTask))
-  (:import (java.util.concurrent TimeUnit))
-  (:require [grimoire
-             [config :as config]
-             [registry :as registry]
-             [node :as node]
-             [storage :as storage]
-             [user :as user]
-             [game :as game]]
+  (:import (org.jboss.netty.util HashedWheelTimer Timeout TimerTask)
+           (java.util.concurrent TimeUnit))
+  (:require [grimoire.config :as config]
+            [grimoire.registry :as registry]
+            [grimoire.node :as node]
+            [grimoire.storage :as storage]
+            [grimoire.user :as user]
+            [grimoire.game :as game]
+            [grimoire.session-store :as store]
+            [grimoire.util :as util]
             [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defonce sessions (atom {}))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defonce ^:private ^HashedWheelTimer hashed-wheel-timer (HashedWheelTimer.))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn get-expire-time
   []
-  (+ (System/currentTimeMillis) (:session-timeout config/system)))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn sessions-running [] (count @sessions))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn register-event-channel
-  [user-id event-channel]
-  (let [stored-event-channel (:event-channel (@sessions user-id))]
-    (when (or (nil? stored-event-channel)
-              (closed? stored-event-channel))
-      (swap! sessions assoc-in [user-id :event-channel] event-channel)))
-  nil)</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private agent-error-handler
-  [session exception]
-  (log/info &quot;agent-error-callback&quot; session exception (agent-error session))
-  (when-not (nil? (agent-error session))
-    (restart-agent session @session)))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private create-watch-fn
-  [callback]
-  (partial (fn [_callback _key _reference old-state new-state]
-             (log/info &quot;watch-fn&quot; _key _reference old-state new-state)
-             (_callback))
-           callback))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn update
-  [user-id response-channel action verb request-body]
-  (if-let [session (:session (@sessions user-id))]
-    (let [update-fn (game/get-update-function {:action (keyword action)
-                                               :verb (keyword verb)
-                                               :body request-body})]
-      (send session (partial (fn [_response-channel _session]
-                               (update-fn _response-channel _session))
-                             response-channel)))
-    (throw (Exception. (format &quot;session_not_running, args=[%s]&quot; user-id))))
-    nil)</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private cancel-timeout
-  [user-id timeout-type]
-  ;; (log/info &quot;cancel-timeout&quot; user-id timeout-type)
-  (let [session (@sessions user-id)]
-    (.cancel ^Timeout (timeout-type session))))</pre></td></tr><tr><td class="docs"><p>FIXME write try/catch macro specifically for this</p>
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private clean-timeouts
+  (+ (System/currentTimeMillis)
+     (:session-timeout config/system)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- get-request-channel
+  [user-id]
+  (let [session (store/get user-id)]
+    (:request-channel @session)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- enqueue-event
+  [user-id event]
+  (enqueue (get-request-channel user-id) event))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- close-request-channel
+  [user-id]
+  (let [session (store/get user-id)
+        request-channel (:request-channel @session)]
+    (close request-channel)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn get-event-channel
+  [user-id]
+  (let [session (store/get user-id)
+        event-channel (:event-channel @session)]
+    (if (or (nil? event-channel)
+            (closed? event-channel))
+      (let [new-event-channel (channel)]
+        (swap! session assoc :event-channel new-event-channel)
+        new-event-channel)
+      event-channel)))</pre></td></tr><tr><td class="docs"><p>{:keys [async?] :or {:async? false} :as options}</p>
+</td><td class="codes"><pre class="brush: clojure">(defmacro build-pipeline
+  [&amp; tasks]
+  (let [channel (gensym 'channel)]
+    `(fn [~channel value#]
+       (run-pipeline value#
+                     {:error-handler #(error ~channel %)}
+                     ~@(map
+                        (fn [s]
+                          `(fn [event#]
+                             (task (~s ~channel event#))))
+                        tasks)))))</pre></td></tr><tr><td class="docs"><p>(util/log-with-thread "generic-event-stage - start sleep")
+(Thread/sleep 5000)
+(util/log-with-thread "generic-event-stage - done sleeping")</p>
+</td><td class="codes"><pre class="brush: clojure">(defn- handle-game-event
+  [{:keys [user-id payload args] :as event}]
+  (let [session (store/get user-id)
+        result-map (apply (game/get-update-function payload) (:state @session) args)]
+    (swap! session assoc :state (:state result-map))
+    (assoc event :response (:response result-map))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(declare periodic-save)</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- handle-system-event
+  [{:keys [user-id payload args] :as event}]
+  (log/info &quot;handle-system-event&quot; event)
+  (let [session (store/get user-id)]
+    (case (:action payload)
+      :periodic-save ((partial periodic-save session) args)
+      nil)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- handle-event
+  [event]
+  (case (:type event)
+    :game (handle-game-event event)
+    :system (handle-system-event event)
+    event))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- process-event
+  [ch event]
+  (try
+    (handle-event event)
+    (catch Exception e
+      (close ch)
+      (ground ch)
+      (log/error &quot;pipeline_error&quot; e)
+      {:type :error
+       :receiver (:receiver event)
+       :error {:error (.getMessage e)}})))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- reply
+  [{:keys [type receiver response error] :as event}]
+  (case type
+    :game (if (:close? event)
+            (enqueue-and-close receiver response)
+            (enqueue receiver response))
+    :error (enqueue-and-close receiver error)
+    event))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- receive-in-order-with-pipeline
+  [ch]
+  (consume ch
+           :channel nil
+           :initial-value nil
+           :reduce (fn [_ event]
+                     (run-pipeline event
+                                   {:error-handler #(error ch %)}
+                                   ;; watch for async tags
+                                   #(process-event ch %)
+                                   reply))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn enqueue-game-event
+  [user-id action response-channel]
+  (if-let [session (store/get user-id)]
+    (let [receiver (or response-channel (:event-channel @session))
+          request-channel (:request-channel @session)]
+      (if (closed? request-channel)
+        (enqueue-and-close receiver {:error &quot;request_channel_is_closed&quot;})
+        (enqueue request-channel {:type :game
+                                  :user-id user-id
+                                  :receiver receiver
+                                  :close? true
+                                  :reload-on-error? true
+                                  :payload action
+                                  :args nil})))
+    (throw (Exception. (format &quot;session_not_running, args=[%s]&quot; user-id)))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- clean-timeouts
   [session]
-  (let [^Timeout session-timeout (:session-timeout session)
-        ^Timeout save-timeout (:save-timeout session)]
+  (doseq [timeout-type [:session-timeout :save-timeout]]
     (try
-      (.cancel session-timeout)
+      (.cancel ^Timeout (timeout-type @session))
       (catch Exception e
-        (log/error &quot;canceling session-timeout failed&quot; (.getMessage e))))
-    (try
-      (.cancel save-timeout)
-      (catch Exception e
-        (log/error &quot;canceling save-timeout failed&quot; (.getMessage e))))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private save-to-storage
-  [user-id session]
-  ;; (log/info &quot;save-to-storage&quot; user-id session)
-  (send-off session
-            (fn [user]
-              (let [user-json (user/to-json user)]
-                (storage/put-data user-id user-json))
-              (assoc user :saved-at (System/currentTimeMillis)))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private safe-close
+        (log/error &quot;clean-timeouts&quot; (.getMessage e)))
+      (finally
+       (swap! session assoc timeout-type nil)))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- save-to-storage
+  [user-id state]
+  (log/info &quot;save-to-storage&quot; user-id)
+  (let [user-json (user/to-json state)]
+    (storage/put-data user-id user-json)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- safe-close-channel
   [ch]
   (when-not (nil? ch)
     (try
       (close ch)
-      (catch Exception e))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private clean
+      (catch Exception e
+        (log/error &quot;safe-close-channel&quot; (.getMessage e))))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- clean
   [user-id]
-  (let [session (@sessions user-id)]
-    (safe-close (:remote-channel session))
-    (safe-close (:event-channel session))
+  (log/info &quot;clean&quot; user-id)
+  (let [session (store/get user-id)
+        channel-keys [:remote-channel :event-channel]]
+    (doseq [channel-key channel-keys]
+      (safe-close-channel (channel-key @session)))
     (clean-timeouts session)
-    (swap! sessions dissoc user-id)
+    (store/remove user-id)
     (registry/deregister user-id))
   nil)</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private stop
+</td><td class="codes"><pre class="brush: clojure">(defn- reset
   [user-id]
-  ;; FIXME stop timeouts
-  (save-to-storage user-id (:session (@sessions user-id)))
-  ;; FIXME should wait synchronously for successful save, yet not
-  ;; block thread
-  (clean user-id)
-  nil)</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private get-timeout
-  [user-id delay timeout-fn]
+  ;; instead of resetting the session on the setup call
+  ;; why not do it instantly?)</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- should-save?
+  [state]
+  (let [answer (&gt; (:updated-at state) (:saved-at state))]
+    (log/info &quot;should-save?&quot; answer)
+    answer))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- stop
+  [user-id]
+  (log/info &quot;stop&quot; user-id)
+  (let [session (store/get user-id)
+        state (:state @session)
+        request-channel (:request-channel @session)]
+    (close request-channel)
+    (clean-timeouts session)
+    (when (should-save? state)
+      (try
+        (save-to-storage user-id (assoc state :saved-at (System/currentTimeMillis)))
+        (catch Exception e
+          (log/error &quot;stop&quot; (.getMessage e) user-id))))
+    (clean user-id)
+    nil))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- get-timeout
+  [delay timeout-fn]
   (let [timer-task (reify org.jboss.netty.util.TimerTask
                      (^void run [this ^Timeout timeout]
-                       (timeout-fn timeout user-id)))]
+                       (timeout-fn timeout)))]
     (.newTimeout hashed-wheel-timer timer-task delay (TimeUnit/MILLISECONDS))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn renew-timeout
+</td><td class="codes"><pre class="brush: clojure">(defn- renew-timeout
   [user-id delay timeout-type timeout-fn]
-  ;; (log/info &quot;renew-timeout&quot; user-id timeout-type timeout-fn)
-  (cancel-timeout user-id timeout-type)
-  (let [timeout (get-timeout user-id delay timeout-fn)]
-    (swap! sessions assoc-in [user-id timeout-type] timeout)))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private session-timeout-handler
-  [^:Timeout timeout user-id]
-  ;; (log/info &quot;session-timeout-handler&quot; user-id timeout)
-  (stop user-id))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private save-timeout-handler
-  [^:Timeout timeout user-id]
-  ;; (log/info &quot;save-timeout-handler&quot; user-id timeout)
-  (let [session (:session (@sessions user-id))
+  (log/info &quot;renew-timeout&quot; user-id timeout-type timeout-fn)
+  (let [session (store/get user-id)]
+    (.cancel ^Timeout (timeout-type @session))
+    (swap! session assoc timeout-type
+           (get-timeout delay (partial timeout-fn user-id)))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- session-timeout-handler
+  [user-id ^:Timeout timeout]
+  (log/info &quot;session-timeout-handler&quot; user-id timeout)
+  (future (stop user-id)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(declare save-timeout-handler)</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- periodic-save
+  [session user-id]
+  (log/info &quot;periodic-save&quot; user-id)
+  (let [new-state (assoc (:state @session) :saved-at (System/currentTimeMillis))
         save-interval (config/system :save-interval)]
-    (save-to-storage user-id session)
-    ;; renew timeout on response from amazon
-    (renew-timeout user-id save-interval :save-timeout save-timeout-handler)))</pre></td></tr><tr><td class="docs"><p>FIXME implement remote message handling example</p>
+    (save-to-storage user-id new-state)
+    (swap! session assoc :state new-state)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- save-timeout-handler
+  [user-id ^:Timeout timeout]
+  (log/info &quot;save-timeout-handler&quot;)
+  (let [state (:state @(store/get user-id))
+        save-interval (config/system :save-interval)]
+    (renew-timeout user-id save-interval :save-timeout save-timeout-handler)
+    (when (should-save? state)
+      (enqueue-event user-id {:type :system
+                              :user-id user-id
+                              :reload-on-error false
+                              :payload {:action :periodic-save}
+                              :args [user-id]}))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn handle-remote-message
   [msg]
   (log/info &quot;handle-remote-message&quot; msg))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private start
-  [user-id session]
-  (let [remote-channel (named-channel (keyword (str user-id)) (fn [_]))
-        session-timeout (get-timeout user-id (config/system :session-timeout)
-                                     session-timeout-handler)
-        save-timeout (get-timeout user-id (config/system :save-interval)
-                                  save-timeout-handler)
-        data {:session session :event-channel nil :remote-channel remote-channel
-              :session-timeout session-timeout :save-timeout save-timeout}]
-    (set-error-handler! session agent-error-handler)
-    ;; (add-watch session nil (create-watch-fn #(log/info &quot;watch callback&quot;)))
-    (swap! sessions assoc user-id data)
+</td><td class="codes"><pre class="brush: clojure">(defn- start
+  [user-id state]
+  (log/info &quot;start&quot;)
+  (let [remote-channel (named-channel (keyword (str user-id)) nil)
+        request-channel (channel)
+        session-timeout (get-timeout (config/system :session-timeout)
+                                     (partial session-timeout-handler user-id))
+        save-timeout (get-timeout (config/system :save-interval)
+                                  (partial save-timeout-handler user-id))
+        session (atom {:state state
+                       :request-channel request-channel
+                       :event-channel nil
+                       :remote-channel remote-channel
+                       :session-timeout session-timeout
+                       :save-timeout save-timeout})]
+    (receive-in-order-with-pipeline request-channel)
+    (store/put user-id session)
     (receive-all remote-channel handle-remote-message))
   nil)</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private load-user
+</td><td class="codes"><pre class="brush: clojure">(defn- try-restart
   [user-id]
+  (log/info &quot;try-testart&quot;)
+  (let [session (store/get user-id)
+        request-channel (:request-channel @session)]
+    (if (closed? request-channel)
+      (let [new-request-channel (channel)]
+        (receive-in-order-with-pipeline new-request-channel)
+        (swap! session assoc :request-channel request-channel)
+        (user/to-json (:state @session)))
+      (throw (Exception. (format &quot;session_still_running, args=[%s]&quot; user-id))))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- load-user
+  [user-id]
+  (log/info &quot;load-user&quot;)
   (let [result (storage/get-data user-id)]
     (if (nil? result)
       (user/new user-id)
       (user/from-json result))))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn setup
+</td><td class="codes"><pre class="brush: clojure">(defn- load-and-start
   [user-id]
+  (log/info &quot;load-and-start&quot;)
   (registry/register user-id (get-expire-time) (node/get-node-name))
   (try
-    (let [session (agent (load-user user-id))]
-      (start user-id session)
-      (user/to-json @session))
+    (let [state (load-user user-id)]
+      (start user-id state)
+      (user/to-json state))
     (catch Exception e
-      (log/error (.getMessage e) user-id)
+      (log/error &quot;setup_failed&quot; (.getMessage e) user-id)
       (clean user-id)
       (throw (Exception. (format &quot;session_start_failed, args=[%s]&quot; user-id))))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn setup
+  [user-id]
+  (log/info &quot;setup&quot;)
+  (if (and (store/exists? user-id)
+           (registry/registered? user-id)
+           (registry/local? user-id))
+    (try-restart user-id)
+    (load-and-start user-id)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn run-bench
   []
-  (let [runs 1000
-        global-start (* (node/get-node-id) runs)]
-    (Thread/sleep 5000)
+  (log/info &quot;run-bench&quot; (node/get-node-id))
+  ;; (let [runs 1000
+  (let [runs 10
+        ;; global-start (* (node/get-node-id) runs)]
+        global-start (* 0 runs)]
+    ;; (Thread/sleep 5000)
     (dotimes [j runs]
-      (let [batch-size 5000
+      (let [batch-size 100
             start (+ global-start (* j batch-size))
             end (+ start batch-size)
-            the-range (range start end)
-            t (time (doseq [i the-range] (setup i)))]
-        (log/info t))
-      (log/info (sessions-running))
-      (Thread/sleep 1000))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.storage" name="grimoire.storage"><h1 class="project-name">grimoire.storage</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+            the-range (range start end)]
+        (time (doseq [i the-range] (setup i))))
+      (log/info &quot;num-sessions&quot; (store/num-sessions))
+      ;; (Thread/sleep 1000))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.session-store" name="grimoire.session-store"><h1 class="project-name">grimoire.session-store</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(ns grimoire.session-store
+  (:refer-clojure :exclude [get remove])
+  (:require [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defonce ^:private store (atom {}))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn num-sessions [] (count @store))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn exists?
+  [user-id]
+  (not (nil? (@store user-id))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn get
+  [user-id]
+  (@store user-id))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn put
+  [user-id session]
+  (if (nil? (@store user-id))
+    (swap! store assoc user-id session)
+    (throw (Exception. (format &quot;session_already_running, args=[%s]&quot; user-id)))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn remove
+  [user-id]
+  (swap! store dissoc user-id))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.storage" name="grimoire.storage"><h1 class="project-name">grimoire.storage</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.storage
   (:use [slingshot.slingshot :only [try+ throw+]]
         [cheshire.core :only [generate-string]])
@@ -3782,23 +3909,27 @@ don't forget back-off</p>
   [])</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn get-data
   [^Integer user-id]
-  (try
-    (let [s3-object (s3/get-object credentials bucket (id-to-storage-key user-id))]
-      (slurp (:content s3-object)))
-    (catch AmazonS3Exception exception
-      (when-not (= (.getErrorCode exception) &quot;NoSuchKey&quot;)
-        (log/error (.getMessage exception)))))
+  ;; (log/info &quot;get-data&quot; user-id)
+  ;; (try
+  ;;   (let [s3-object (s3/get-object credentials bucket (id-to-storage-key user-id))]
+  ;;     (slurp (:content s3-object)))
+  ;;   (catch AmazonS3Exception exception
+  ;;     (when-not (= (.getErrorCode exception) &quot;NoSuchKey&quot;)
+  ;;       (log/error (.getMessage exception)))))
   nil)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn put-data
   [^Integer user-id ^String json]
-  (s3/put-object credentials bucket (id-to-storage-key user-id) json)
-  nil)</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.user" name="grimoire.user"><h1 class="project-name">grimoire.user</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+  ;; (log/info &quot;put-data&quot; user-id)
+  ;; (let [result (s3/put-object credentials bucket (id-to-storage-key user-id) json)]
+  ;;   (log/info &quot;put-data&quot; result))
+  nil)</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.timer" name="grimoire.timer"><h1 class="project-name">grimoire.timer</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(ns grimoire.timer)</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.user" name="grimoire.user"><h1 class="project-name">grimoire.user</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.user
   (:use [slingshot.slingshot :only [try+ throw+]]
         [cheshire.core :only [generate-string parse-string]])
   (:require [grimoire
              [config :as config]
-             [map :as map-ns]]
+             [map :as game-map]]
             [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defrecord User [^Integer id
                  name
@@ -3809,26 +3940,31 @@ don't forget back-off</p>
                  updated-at
                  created-at
                  saved-at
-                 version])</pre></td></tr><tr><td class="docs">
+                 version])</pre></td></tr><tr><td class="docs"><p>add session-token</p>
+</td><td class="codes"></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn new
   [user-id &amp; name]
   (let [current-time (System/currentTimeMillis)
         current-version (:session-version config/system)
-        default-map (map-ns/generate-empty-map 100 100)]
-    (User. user-id
-           (or name &quot;John Doe&quot;)
-           0
-           0
-           default-map
-           current-time
-           current-time
-           0
-           current-version)))</pre></td></tr><tr><td class="docs">
+        default-map (game-map/empty-map 7 7)]
+    {:id user-id
+     :name (or name &quot;John Doe&quot;)
+     :points 0
+     :balance 0
+     :map default-map
+     :updated-at current-time
+     :created-at current-time
+     :saved-at 0
+     :version current-version}))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn from-struct
   [{:keys [id name points balance map
            updated-at created-at saved-at version], :or {saved-at 0}}]
-  (log/info &quot;from-struct&quot; map)
-  (User. id name points balance {} updated-at created-at saved-at version))</pre></td></tr><tr><td class="docs">
+  ;; (log/info &quot;from-struct&quot; map)
+  ;; (User. id name points balance {} updated-at created-at saved-at
+                                        ;version)
+  (apply hash-map
+         (User. id name points balance {}
+                updated-at created-at saved-at version)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn from-json
   [json]
   (let [struct (parse-string json true)]
@@ -3837,29 +3973,33 @@ don't forget back-off</p>
   [user]
   (generate-string user))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.util" name="grimoire.util"><h1 class="project-name">grimoire.util</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.util
-  (:use [lamina core executor]))</pre></td></tr><tr><td class="docs">
+  (:use [lamina core executor])
+  (:require [clojure.tools.logging :as log]))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn current-time
+  []
+  (System/currentTimeMillis))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmacro log-with-thread
+  [&amp; msg]
+  `(log/info ~@msg (Thread/currentThread)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn has-keys?
   [m &amp; ks] (every? #(contains? m %) ks))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn build-response
-  [result &amp; response]
-  {:response (or (first response) {}) :result result})</pre></td></tr><tr><td class="docs"><p>break up; so it's usable without multifunctions</p>
+</td><td class="codes"><pre class="brush: clojure">(defn touch
+  [state]
+  (assoc state :updated-at (current-time)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn to-result-map
+  ([state]
+     (to-result-map state {}))
+  ([state response]
+     {:state state :response response}))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defmacro defupdate
   [multi-fn dispatch-value &amp; body-fn]
   `(. ~(with-meta multi-fn  {:tag 'clojure.lang.MultiFn})
       addMethod
       ~dispatch-value
-      (fn [request-body#]
-        (fn [channel# state#]
-          (try
-            (let [result-map# (~@body-fn state# (:body request-body#))]
-              (enqueue-and-close channel# (:response result-map#))
-              (:result result-map#))
-            (catch Exception e#
-              (log/error &quot;update failed with&quot; (.getMessage e#))
-              (when-not (closed? channel#)
-                (enqueue-and-close channel# {&quot;error&quot; &quot;fatal&quot;})
-                ;; (throw (Exception. &quot;update failed; agent will fail&quot;))
-                state#)))))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.web" name="grimoire.web"><h1 class="project-name">grimoire.web</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+      (fn [event#]
+        (fn [state#]
+          (let [result-map# (~@body-fn state# (:body event#))]
+            (assoc-in result-map# [:state :updated-at] (current-time)))))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#grimoire.web" name="grimoire.web"><h1 class="project-name">grimoire.web</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns grimoire.web
   (:use [slingshot.slingshot :only [try+ throw+]]
         [lamina core executor]
@@ -3874,10 +4014,9 @@ don't forget back-off</p>
             [grimoire
              [node :as node]
              [session :as session]
-             [storage :as storage]
-             [user :as user]
              [registry :as registry]
-             [config :as config]])
+             [config :as config]
+             [util :as util]])
   (:import org.codehaus.jackson.JsonParseException)
   ;; index/stats html imports
   ;; TODO move to template ns
@@ -3892,7 +4031,7 @@ don't forget back-off</p>
   {:status (or status 200)
    :headers {&quot;Content-Type&quot; &quot;application/json&quot;}
    :body (generate-string (or data {}))})</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private encode-event-data
+</td><td class="codes"><pre class="brush: clojure">(defn- encode-event-data
   [data]
   (str &quot;data:&quot; (generate-string data) &quot;\n\n&quot;))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn respond
@@ -3930,11 +4069,12 @@ don't forget back-off</p>
    (javascript-tag &quot;var CLOSURE_NO_DEPS = true;&quot;)
    (include-js path)
    (javascript-tag init)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(def page-title &quot;Grimoire&quot;)</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn index
   [user-id]
   (html5
    [:head
-    [:title &quot;grimoire&quot;]]
+    [:title (page-title)]]
    [:body
     [:div {:id &quot;content&quot;} ]
     (run-clojurescript
@@ -3944,43 +4084,51 @@ don't forget back-off</p>
   []
   (html5
    [:head
-    [:title &quot;stats&quot;]]
+    [:title (page-title)]]
    [:body
     ;; http://goo.gl/QrXDs
     (javascript-tag &quot;var source = new EventSource('/stats-events');&quot;)
-    (javascript-tag &quot;source.addEventListener('message', function(event) { console.log(JSON.parse(event.data)) })&quot;)]))</pre></td></tr><tr><td class="docs"><p>FIXME wrap result in 'wrap-aleph-handler'</p>
+    (javascript-tag &quot;source.addEventListener('message', function(event) { console.log(JSON.parse(event.data)) })&quot;)]))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- pipeline-error-handler
+  [ch error]
+  (let [message (.getMessage ^Exception error)]
+    (log/error &quot;pipeline&quot; message)
+    (respond ch {&quot;error&quot; message})))</pre></td></tr><tr><td class="docs"><p>Use lamina.executor/task's for potentially long-running operations
+in the pipeline. The server handler will return immediatle to it's pool
+and aleph/lamina will take care of responding to the client at some
+later point.</p>
 </td><td class="codes"><pre class="brush: clojure">(defmacro defpipeline
   [name &amp; tasks]
   `(defn ~name
-     [response-channel# request#]
-     (run-pipeline request#
-                   {:error-handler (fn [error#]
-                                     (let [message# (.getMessage ^Exception error#)]
-                                       (log/error &quot;pipeline&quot; message#)
-                                       (respond response-channel# {&quot;error&quot; message#})))}
-                   ~@tasks
-                   (fn [response#]
-                     (respond response-channel# response#)))))</pre></td></tr><tr><td class="docs"><p>(clojure.pprint/pprint (macroexpand '(defpipeline setup)))</p>
-</td><td class="codes"></td></tr><tr><td class="docs">
+     []
+     (wrap-aleph-handler
+      (fn [channel# request#]
+        (run-pipeline request#
+                      {:error-handler (partial pipeline-error-handler channel#)}
+                      ~@tasks
+                      (fn [response#]
+                        (respond channel# response#)))))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defpipeline setup-handler
-  (fn [request]
-    (let [{{:keys [user-id]} :route-params} request]
+  #(task
+    (let [{{:keys [user-id]} :route-params} %]
       (session/setup (read-string user-id)))))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defpipeline where-is-handler
-  (fn [request]
-    (let [{{:keys [user-id]} :route-params} request]
-      {:node (registry/get-location (read-string user-id))})))</pre></td></tr><tr><td class="docs">
+  #(task
+    (let [{{:keys [user-id]} :route-params} %]
+      {:node (registry/get-location (read-string user-id))})))</pre></td></tr><tr><td class="docs"><p>FIXME should guard for exception (java.lang.NumberFormatException)</p>
 </td><td class="codes"><pre class="brush: clojure">(defn action-handler
   [response-channel request]
-  (let [event-channel (map* generate-string (channel))
+  (let [chunk-channel (map* generate-string (channel))
         {{:keys [user-id action verb]} :route-params} request
-        body (decode-json (:body request))]
-    (session/update (read-string user-id) event-channel action verb body)
+        game-event {:action (keyword action)
+                    :verb (keyword verb)
+                    :body (decode-json (:body request))}]
+    (session/enqueue-game-event (read-string user-id) game-event chunk-channel)
     (enqueue response-channel
              {:status 200
               :headers {&quot;Content-Type&quot; &quot;application/json&quot;}
-              :body event-channel})))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(defn ^:private create-event-data-response
+              :body chunk-channel})))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn- respond-chunked
   [response-channel event-channel]
   (enqueue response-channel
            {:status 200
@@ -3988,37 +4136,49 @@ don't forget back-off</p>
             :body (map* encode-event-data event-channel)}))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn session-events-handler
   [response-channel request]
-  (let [event-channel (channel)
-        {{:keys [user-id]} :route-params} request]
-    (session/register-event-channel (read-string user-id) event-channel)
-    (create-event-data-response response-channel event-channel)))</pre></td></tr><tr><td class="docs">
+  (let [{{:keys [user-id]} :route-params} request
+        event-channel (session/get-event-channel (read-string user-id))]
+    (respond-chunked response-channel event-channel)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn stats-events-handler
   [response-channel request]
   (let [event-channel (channel)]
     (node/register-stats-channel event-channel)
-    (create-event-data-response response-channel event-channel)))</pre></td></tr><tr><td class="docs"><p>TODO move to bench/test namespace</p>
+    (respond-chunked response-channel event-channel)))</pre></td></tr><tr><td class="docs"><p>TODO move to bench/test namespace</p>
 </td><td class="codes"><pre class="brush: clojure">(defn bench-handler
   [response-channel request]
-  (let [event-channel (map* generate-string (channel))]
-    (session/update (read-string &quot;123&quot;) event-channel &quot;map&quot; &quot;add&quot; {:id 1 :x 50 :y 50})
+  (let [event-channel (map* generate-string (channel))
+        user-id (Integer/parseInt &quot;123&quot;)]
+    (session/enqueue-game-event user-id
+                                {:action (keyword &quot;map&quot;)
+                                 :verb (keyword &quot;add&quot;)
+                                 :body {:id 1 :x (rand-int 100) :y (rand-int 100)}}
+                                :response-channel event-channel)
     (enqueue response-channel
              {:status 200
               :headers {&quot;Content-Type&quot; &quot;application/json&quot;}
-              :body event-channel})))</pre></td></tr><tr><td class="docs"><p>FIXME wrap synchronous handlers instead of asynchronous ones</p>
-</td><td class="codes"><pre class="brush: clojure">(defroutes handler
-  (GET &quot;/&quot; [] (index 123))
-  (context [&quot;/:user-id&quot;, :uuser-id #&quot;[0-9]+&quot;] []
-           (GET &quot;/setup&quot; [] (wrap-aleph-handler setup-handler))
-           (GET &quot;/whereis&quot; [] (wrap-aleph-handler where-is-handler))
-           (GET &quot;/events&quot; [] (wrap-aleph-handler session-events-handler))
-           (POST &quot;/:action/:verb&quot; [] (wrap-aleph-handler action-handler)))
-  (GET [&quot;/stats-events&quot;] [] (wrap-aleph-handler stats-events-handler))
-  (GET [&quot;/stats&quot;] [] (stats-index))
-  (GET &quot;/bench&quot; [] (wrap-aleph-handler bench-handler))
-  (route/resources &quot;/&quot;)
-  (route/not-found &quot;Page not found&quot;))</pre></td></tr><tr><td class="docs">
+              :body event-channel})))</pre></td></tr><tr><td class="docs"><p>TODO move to bench/test namespace</p>
+</td><td class="codes"><pre class="brush: clojure">(defn noop-handler
+  []
+  {:status 200
+   :headers {}
+   :body nil})</pre></td></tr><tr><td class="docs"><p>:level (level/update action)
+:map (map/update action)</p>
+</td><td class="codes"></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(def handlers
+  (routes
+   (GET &quot;/&quot; [] (index 123))
+   (GET &quot;/:user-id/where-is&quot; [] (where-is-handler))
+   (GET &quot;/:user-id/events&quot; [] (wrap-aleph-handler session-events-handler))
+   (POST &quot;/:user-id/:action/:verb&quot; [] (wrap-aleph-handler action-handler))
+   (GET &quot;/:user-id/setup&quot; [] (setup-handler))
+   (GET &quot;/stats-events&quot; [] (wrap-aleph-handler stats-events-handler))
+   (GET &quot;/stats&quot; [] (stats-index))
+   (GET &quot;/bench&quot; [] (wrap-aleph-handler bench-handler))
+   (GET &quot;/noop&quot; [] (noop-handler))
+   (route/resources &quot;/&quot;)
+   (route/not-found &quot;Page not found&quot;)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(def application
-  (-&gt; handler
+  (-&gt; handlers
       wrap-bounce-favicon
       wrap-json-params
       wrap-error-handling))</pre></td></tr><tr><td class="docs">
