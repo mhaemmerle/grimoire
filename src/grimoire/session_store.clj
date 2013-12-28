@@ -8,15 +8,19 @@
 
 (defn exists?
   [user-id]
-  (not (nil? (@store user-id))))
+  (log/info "exists" user-id)
+  (let [user (clojure.core/get @store user-id)]
+    (not (nil? user))))
 
 (defn get
   [user-id]
-  (@store user-id))
+  (log/info "get" user-id)
+  (clojure.core/get @store user-id))
 
 (defn put
   [user-id session]
-  (if (nil? (@store user-id))
+  (log/info "put" user-id)
+  (if (nil? (clojure.core/get @store user-id))
     (swap! store assoc user-id session)
     (throw (Exception. (format "session_already_running, args=[%s]" user-id)))))
 

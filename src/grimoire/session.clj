@@ -1,9 +1,9 @@
 (ns grimoire.session
-  (:use [lamina core executor])
+  (:use [lamina core executor]
+        grimoire.registry)
   (:import (org.jboss.netty.util HashedWheelTimer Timeout TimerTask)
            (java.util.concurrent TimeUnit))
   (:require [grimoire.config :as config]
-            [grimoire.registry :as registry]
             [grimoire.node :as node]
             [grimoire.storage :as storage]
             [grimoire.user :as user]
@@ -80,6 +80,7 @@
 
 (defn- handle-event
   [event]
+  (log/info "handle-event" event)
   (case (:type event)
     :game (handle-game-event event)
     :system (handle-system-event event)
@@ -87,6 +88,7 @@
 
 (defn- process-event
   [ch event]
+  (log/info "process-event" ch event)
   (try
     (handle-event event)
     (catch Exception e
@@ -106,17 +108,15 @@
     :error (enqueue-and-close receiver error)
     event))
 
+;; FIXME completely broken
 (defn- receive-in-order-with-pipeline
   [ch]
-  (consume ch
-           :channel nil
-           :initial-value nil
-           :reduce (fn [_ event]
-                     (run-pipeline event
-                                   {:error-handler #(error ch %)}
-                                   ;; watch for async tags
-                                   #(process-event ch %)
-                                   reply))))
+  (receive-in-order ch (fn [event]
+                         (run-pipeline event
+                                       {:error-handler #(error ch %)}
+                                       ;; watch for async tags
+                                       #(process-event ch %)
+                                       reply))))
 
 (defn enqueue-game-event
   [user-id action response-channel]
@@ -167,7 +167,7 @@
       (safe-close-channel (channel-key @session)))
     (clean-timeouts session)
     (store/remove user-id)
-    (registry/deregister user-id))
+    (deregister *client* user-id))
   nil)
 
 (defn- reset
@@ -273,7 +273,7 @@
     (if (closed? request-channel)
       (let [new-request-channel (channel)]
         (receive-in-order-with-pipeline new-request-channel)
-        (swap! session assoc :request-channel request-channel)
+        (swap! session assoc :request-channel new-request-channel)
         (user/to-json (:state @session)))
       (throw (Exception. (format "session_still_running, args=[%s]" user-id))))))
 
@@ -288,7 +288,7 @@
 (defn- load-and-start
   [user-id]
   (log/info "load-and-start")
-  (registry/register user-id (get-expire-time) (node/get-node-name))
+  (register *client* user-id (get-expire-time) (node/get-node-name))
   (try
     (let [state (load-user user-id)]
       (start user-id state)
@@ -300,12 +300,14 @@
 
 (defn setup
   [user-id]
-  (log/info "setup")
-  (if (and (store/exists? user-id)
-           (registry/registered? user-id)
-           (registry/local? user-id))
-    (try-restart user-id)
-    (load-and-start user-id)))
+  (log/info "setup" user-id)
+  (let [e (store/exists? user-id)
+        r (registered? *client* user-id)
+        l (local? *client* user-id)]
+    (log/info "setup" e r l)
+    (if (and e r l)
+      (try-restart user-id)
+      (load-and-start user-id))))
 
 (defn run-bench
   []

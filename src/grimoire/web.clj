@@ -1,5 +1,6 @@
 (ns grimoire.web
   (:use [slingshot.slingshot :only [try+ throw+]]
+        grimoire.registry
         [lamina core executor]
         [aleph http formats]
         compojure.core
@@ -9,12 +10,12 @@
         [cheshire.core :only [generate-string]])
   (:require [compojure.route :as route]
             [clojure.tools.logging :as log]
-            [grimoire
-             [node :as node]
-             [session :as session]
-             [registry :as registry]
-             [config :as config]
-             [util :as util]])
+            [grimoire.node :as node]
+            [grimoire.session :as session]
+            [grimoire.config :as config]
+            [grimoire.util :as util]
+            ;; [grimoire.rhino-adapter :as r]
+            )
   (:import org.codehaus.jackson.JsonParseException)
   ;; index/stats html imports
   ;; TODO move to template ns
@@ -129,7 +130,7 @@
 (defpipeline where-is-handler
   #(task
     (let [{{:keys [user-id]} :route-params} %]
-      {:node (registry/get-location (read-string user-id))})))
+      {:node (get-location *client* (read-string user-id))})))
 
 ;; FIXME should guard for exception (java.lang.NumberFormatException)
 (defn action-handler
@@ -179,6 +180,15 @@
               :headers {"Content-Type" "application/json"}
               :body event-channel})))
 
+(defn js-handler
+  [response-channel request]
+  (let [ch (map* generate-string (channel))
+        response {:status 200
+                  :headers {"Content-Type" "application/json"}
+                  :body ch}]
+    ;; (r/do-req request ch)
+    (enqueue response-channel response)))
+
 ;; TODO move to bench/test namespace
 (defn noop-handler
   []
@@ -199,6 +209,7 @@
    (GET "/stats-events" [] (wrap-aleph-handler stats-events-handler))
    (GET "/stats" [] (stats-index))
    (GET "/bench" [] (wrap-aleph-handler bench-handler))
+   (GET "/js" [] (wrap-aleph-handler js-handler))
    (GET "/noop" [] (noop-handler))
    (route/resources "/")
    (route/not-found "Page not found")))

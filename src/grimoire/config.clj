@@ -1,8 +1,8 @@
 (ns grimoire.config)
 
 (defonce system
-  {:save-interval 60000
-   :session-timeout 300000
+  {:save-interval 10000
+   :session-timeout 60000
    :session-version 1})
 
 (defonce facebook
@@ -16,6 +16,8 @@
   [{:port 2181 :host "127.0.0.1"}
    {:port 2181 :host "127.0.0.1"}
    {:port 2181 :host "127.0.0.1"}])
+
+;; switch on wether we should use zookeeper or not
 
 (defonce aws
   {:access-key ""

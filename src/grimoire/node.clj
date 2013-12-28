@@ -111,16 +111,16 @@
 
 (defn ^:private create-distributor
   []
-  (distributor :user-id
-               (fn [facet facet-channel]
-                 (log/info "distributor" facet facet-channel)
-                 ;; here's hoping to named-channel's idempotency
-                 (let [user-channel (named-channel (keyword (str facet)) (fn [_]))]
-                   (log/info "distributor" user-channel)
-                   (close-on-idle 5000 facet-channel)
-                   (close-on-idle 5000 user-channel)
-                   (ground user-channel)
-                   (siphon facet-channel user-channel)))))
+  (distributor {:facet :user-id
+                :initializer (fn [facet facet-channel]
+                               (log/info "distributor" facet facet-channel)
+                               ;; here's hoping to named-channel's idempotency
+                               (let [user-channel (named-channel (keyword (str facet)) (fn [_]))]
+                                 (log/info "distributor" user-channel)
+                                 (close-on-idle 5000 facet-channel)
+                                 (close-on-idle 5000 user-channel)
+                                 (ground user-channel)
+                                 (siphon facet-channel user-channel)))}))
 
 (defn start-server
   [^Integer port ^Integer node-id]

@@ -9,7 +9,8 @@
              [node :as node]
              [registry :as registry]
              [landing :as landing]
-             [session :as session]]
+             [session :as session]
+             [dist :as dist]]
             [clojure.tools.logging :as log]))
 
 (set! *warn-on-reflection* true)
@@ -31,7 +32,7 @@
   (node/start-server (:cluster-port options) (:node-id options))
   (cluster/start {:zk-host "127.0.0.1" :zk-port 2181
                   :local-port (:cluster-port options)})
-  (registry/start "127.0.0.1" 2181)
+  ;; (registry/start "127.0.0.1" 2181)
   (web/start (:api-port options))
   ;; (landing/start (:canvas-port options))
   (println (format "'%s' waiting for work, work!" (node/get-node-name))))
